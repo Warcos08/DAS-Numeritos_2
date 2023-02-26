@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">DAS_Proyecto1</string>
+    <string name="inicio_logo">NUMERITOS</string>
+    <string name="inicio_btn_jugar">Jugar</string>
+    <string name="inicio_btn_ranking">Tabla de puntuaciones</string>
+    <string name="inicio_btn_ajustes">Ajustes</string>
+    <string name="inicio_btn_salir">Salir del juego</string>
+    <string name="inicio_btn_instrucciones">Cómo jugar</string>
 </resources>
