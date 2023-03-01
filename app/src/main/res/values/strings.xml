@@ -6,4 +6,9 @@
     <string name="inicio_btn_ajustes">Ajustes</string>
     <string name="inicio_btn_salir">Salir del juego</string>
     <string name="inicio_btn_instrucciones">Cómo jugar</string>
+    <string name="ajustes_text_idioma">Idioma:</string>
+    <string name="ajustes_text_ajustes">Ajustes</string>
+    <string name="ajustes_text_usuario">Usuario:</string>
+    <string name="ajustes_btn_salir">Volver a inicio</string>
+    <string name="ajustes_btn_preferencias">Preferencias</string>
 </resources>

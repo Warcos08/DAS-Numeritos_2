@@ -7,4 +7,9 @@
     <string name="inicio_btn_ajustes">Settings</string>
     <string name="inicio_btn_salir">Quit game</string>
     <string name="inicio_btn_instrucciones">How to play</string>
+    <string name="ajustes_text_idioma">Language:</string>
+    <string name="ajustes_text_ajustes">Settings</string>
+    <string name="ajustes_text_usuario">Username:</string>
+    <string name="ajustes_btn_salir">Return to title screen</string>
+    <string name="ajustes_btn_preferencias">Preferences</string>
 </resources>
