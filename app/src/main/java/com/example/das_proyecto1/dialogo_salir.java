@@ -21,7 +21,7 @@ public class dialogo_salir extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        // Obtengo el idioma del dispositivo (NOSE SI EL DE LA APP)
+        // Obtengo el idioma del dispositivo
         Locale locale = getResources().getConfiguration().getLocales().get(0);
 
         String idioma = locale.getDisplayLanguage();

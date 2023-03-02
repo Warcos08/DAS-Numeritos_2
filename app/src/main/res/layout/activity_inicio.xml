@@ -23,6 +23,7 @@
         android:id="@+id/btn_jugar"
         android:layout_width="207dp"
         android:layout_height="84dp"
+        android:onClick="onClickJugar"
         android:text="@string/inicio_btn_jugar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,5 +1,6 @@
 package com.example.das_proyecto1;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -15,16 +16,43 @@ import java.util.Locale;
 
 public class actividad_ajustes extends AppCompatActivity {
 
+    private static String idiomaAct = "English";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actividad_ajustes);
+
+        // Cargo la pagina en el idioma elegido
+        if (savedInstanceState != null) {
+            String idioma = savedInstanceState.getString("idioma");
+            this.idiomaAct = idioma;
+            Locale nuevaloc;
+
+            if (idioma.equals("English")) {
+                nuevaloc = new Locale("en");
+            } else {
+                nuevaloc = new Locale("es");
+            }
+
+            Locale.setDefault(nuevaloc);
+            Configuration configuration = getBaseContext().getResources().getConfiguration();
+            configuration.setLocale(nuevaloc);
+            configuration.setLayoutDirection(nuevaloc);
+
+            Context context = getBaseContext().createConfigurationContext(configuration);
+            getBaseContext().getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
+
+            finish();
+            startActivity(getIntent());
+        }
 
         // Cambiar a español
         Button btn_es = (Button) findViewById(R.id.ajustes_btnES);
         btn_es.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                idiomaAct = "Spanish";
                 Locale nuevaloc = new Locale("es");
                 Locale.setDefault(nuevaloc);
                 Configuration configuration = getBaseContext().getResources().getConfiguration();
@@ -44,6 +72,7 @@ public class actividad_ajustes extends AppCompatActivity {
         btn_en.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                idiomaAct = "English";
                 Locale nuevaloc = new Locale("en");
                 Locale.setDefault(nuevaloc);
                 Configuration configuration = getBaseContext().getResources().getConfiguration();
@@ -80,5 +109,12 @@ public class actividad_ajustes extends AppCompatActivity {
 
     }
 
+    // Para guardar la info cuando se rote la pantalla
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        // Guardo el idioma del dispositivo
+        savedInstanceState.putString("idioma", idiomaAct);
+    }
 
 }
