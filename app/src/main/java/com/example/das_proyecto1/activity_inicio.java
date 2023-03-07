@@ -31,7 +31,7 @@ public class activity_inicio extends AppCompatActivity {
 
     // Codigos para gestionar los intents de las diferentes actividades
     private static int resultCodeAjustes = 3;
-    private static String idiomaAct = "English";
+    private static String idiomaAct = "";
 
 
     // Metodos del ciclo de vida de la actividad
@@ -53,7 +53,7 @@ public class activity_inicio extends AppCompatActivity {
             idiomaAct = idioma;
             Locale nuevaloc;
 
-            if (idioma.equals("English")) {
+            if (idioma.equals("English") || idiomaAct.equals("inglés")) {
                 nuevaloc = new Locale("en");
             } else {
                 nuevaloc = new Locale("es");
@@ -70,6 +70,7 @@ public class activity_inicio extends AppCompatActivity {
             finish();
             startActivity(getIntent());
         }
+        Toast.makeText(activity_inicio.this, idiomaAct, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -132,7 +133,7 @@ public class activity_inicio extends AppCompatActivity {
                 String idioma = locale.getDisplayLanguage();
 
                 // Diferentes mensajes posibles según el idioma
-                if (idioma.equals("English")) {
+                if (idiomaAct.equals("English") || idiomaAct.equals("inglés")) {
                     msg1 = "Write down your username and password";
                     msg2 = "Wrong username or password";
                     msg3 = "Logging in";
@@ -202,7 +203,7 @@ public class activity_inicio extends AppCompatActivity {
                 String msg_campos_vacios;
                 String msg_contraseñas;
                 String msg_registro;
-                if (idioma.equals("English")) {
+                if (idiomaAct.equals("English") || idiomaAct.equals("inglés")) {
                     msg_campos_vacios = "Please fill all fields";
                     msg_contraseñas = "Unequal passwords, please try again";
                     msg_registro = "Registered succesfully";

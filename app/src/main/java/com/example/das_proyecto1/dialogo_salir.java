@@ -28,7 +28,7 @@ public class dialogo_salir extends DialogFragment {
         String idioma = locale.getDisplayLanguage();
         String msg;
         String si;
-        if (idioma.equals("English")) {
+        if (idioma.equals("English") || idioma.equals("inglés")) {
             msg = "Are you sure you want to quit?";
             si = "Yes";
         } else {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DAS_Proyecto1</string>
+    <string name="app_name">Numeritos</string>
     <string name="inicio_logo">NUMERITOS</string>
     <string name="inicio_btn_jugar">Jugar</string>
     <string name="inicio_btn_ranking">Tabla de puntuaciones</string>

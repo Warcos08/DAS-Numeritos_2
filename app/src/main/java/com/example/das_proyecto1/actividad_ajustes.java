@@ -11,12 +11,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Locale;
 
 public class actividad_ajustes extends AppCompatActivity {
 
-    private static String idiomaAct = "English";
+    private static String idiomaAct = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +115,7 @@ public class actividad_ajustes extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         // Guardo el idioma del dispositivo
+        Toast.makeText(actividad_ajustes.this, idiomaAct, Toast.LENGTH_SHORT).show();
         savedInstanceState.putString("idioma", idiomaAct);
     }
 

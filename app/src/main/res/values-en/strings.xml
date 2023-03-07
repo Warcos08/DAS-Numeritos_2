@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">DAS_Proyecto1</string>
+    <string name="app_name">Numeritos</string>
     <string name="inicio_logo">NUMBERS</string>
     <string name="inicio_btn_jugar">Play</string>
     <string name="inicio_btn_ranking">Higshcore ranking</string>
