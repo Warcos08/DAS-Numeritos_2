@@ -21,4 +21,8 @@
     <string name="register_apellidos">Surname</string>
     <string name="register_password2">Repeat your password</string>
     <string name="register_btn">Register</string>
+    <string name="jugar_puntuacion">"Score: "</string>
+    <string name="jugar_respuesta">Answer</string>
+    <string name="jugar_instrucciones">How to play</string>
+    <string name="jugar_hint">Your guess</string>
 </resources>

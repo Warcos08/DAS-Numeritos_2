@@ -3,26 +3,23 @@ package com.example.das_proyecto1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.Locale;
 
-public class actividad_ajustes extends AppCompatActivity {
+public class activity_ajustes extends AppCompatActivity {
 
     private static String idiomaAct = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_actividad_ajustes);
+        setContentView(R.layout.activity_ajustes);
 
         // Cargo la pagina en el idioma elegido
         if (savedInstanceState != null) {
@@ -114,7 +111,6 @@ public class actividad_ajustes extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         // Guardo el idioma del dispositivo
-        Toast.makeText(actividad_ajustes.this, idiomaAct, Toast.LENGTH_SHORT).show();
         savedInstanceState.putString("idioma", idiomaAct);
     }
 

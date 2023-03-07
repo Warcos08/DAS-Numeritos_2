@@ -5,7 +5,6 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
@@ -87,7 +86,7 @@ public class activity_inicio extends AppCompatActivity {
     }
 
     public void onClickAjustes(View v) {
-        Intent intent = new Intent(activity_inicio.this, actividad_ajustes.class);
+        Intent intent = new Intent(activity_inicio.this, activity_ajustes.class);
         startActivityIntent.launch(intent);
     }
 
@@ -119,8 +118,6 @@ public class activity_inicio extends AppCompatActivity {
                 String msg1;
                 String msg2;
                 String msg3;
-                // Obtengo el idioma del dispositivo
-                Locale locale = getResources().getConfiguration().getLocales().get(0);
 
                 // Diferentes mensajes posibles según el idioma
                 if (idiomaAct.equals("en")) {
@@ -150,6 +147,8 @@ public class activity_inicio extends AppCompatActivity {
                     if (c.moveToNext()) {
                         Toast.makeText(activity_inicio.this, msg3, Toast.LENGTH_SHORT).show();
                         // Jugar
+                        Intent intent = new Intent(activity_inicio.this, activity_jugar.class);
+                        startActivityIntent.launch(intent);
 
                     } else {
                         Toast.makeText(activity_inicio.this, msg2, Toast.LENGTH_SHORT).show();
@@ -175,6 +174,7 @@ public class activity_inicio extends AppCompatActivity {
         dialog.show();
     }
 
+    // Funcion que crea el dialogo de registrarse
     public void showDialogoRegistro() {
         // Creo el dialogo de login con el layout
         Dialog dialog = new Dialog(this);
@@ -187,8 +187,6 @@ public class activity_inicio extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Según el idioma seteo los mensajes que van a aparecer
-                Locale locale = getResources().getConfiguration().getLocales().get(0);
-
                 String msg_campos_vacios;
                 String msg_contraseñas;
                 String msg_registro;
@@ -237,6 +235,11 @@ public class activity_inicio extends AppCompatActivity {
                     bd.insert("Usuarios", null, datos);
 
                     Toast.makeText(activity_inicio.this, msg_registro, Toast.LENGTH_SHORT).show();
+
+                    // Inicio el juego
+                    Intent intent = new Intent(activity_inicio.this, activity_jugar.class);
+                    startActivityIntent.launch(intent);
+
                 }
 
             }
@@ -249,6 +252,7 @@ public class activity_inicio extends AppCompatActivity {
     ActivityResultLauncher<Intent> startActivityIntent = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
+
             Locale locale = getResources().getConfiguration().getLocales().get(0);
             idiomaAct = locale.getLanguage();
 

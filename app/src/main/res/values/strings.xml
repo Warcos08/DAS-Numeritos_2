@@ -20,4 +20,8 @@
     <string name="register_apellidos">Apellido(s)</string>
     <string name="register_password2">Repite la contraseña</string>
     <string name="register_btn">Registrarse</string>
+    <string name="jugar_puntuacion">Puntuación:</string>
+    <string name="jugar_respuesta">Responder</string>
+    <string name="jugar_instrucciones">Cómo jugar</string>
+    <string name="jugar_hint">Tu respuesta</string>
 </resources>

@@ -23,6 +23,12 @@ public class BD_login extends SQLiteOpenHelper {
                 "'Password' VARCHAR(255)" +
                 ")");
 
+        // Creacion de la tabla que guarda las puntuaciones
+        sqLiteDatabase.execSQL("CREATE TABLE Puntuaciones (" +
+                "'Id' INT NOT NULL PRIMARY KEY, " +
+                "'Username' VARCHAR(255), " +
+                "'Puntuacion' INT" +
+                ")");
     }
 
     @Override
