@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -130,6 +131,7 @@ public class activity_inicio extends AppCompatActivity {
                 Locale locale = getResources().getConfiguration().getLocales().get(0);
                 String idioma = locale.getDisplayLanguage();
 
+                // Diferentes mensajes posibles según el idioma
                 if (idioma.equals("English")) {
                     msg1 = "Write down your username and password";
                     msg2 = "Wrong username or password";
@@ -162,7 +164,6 @@ public class activity_inicio extends AppCompatActivity {
                         Toast.makeText(activity_inicio.this, msg2, Toast.LENGTH_SHORT).show();
                     }
 
-
                 }
             }
 
@@ -174,10 +175,82 @@ public class activity_inicio extends AppCompatActivity {
         text_registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // Cierro el dialogo de login y abro el de registro
+                dialog.dismiss();
+                showDialogoRegistro();
             }
         });
 
+        dialog.show();
+    }
+
+    public void showDialogoRegistro() {
+        // Creo el dialogo de login con el layout
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialogo_register);
+        dialog.setCancelable(true);
+
+        // Funcion del boton de registro
+        Button btn_registro = (Button) dialog.findViewById(R.id.btn_registro);
+        btn_registro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Según el idioma seteo los mensajes que van a aparecer
+                Locale locale = getResources().getConfiguration().getLocales().get(0);
+                String idioma = locale.getDisplayLanguage();
+
+                String msg_campos_vacios;
+                String msg_contraseñas;
+                String msg_registro;
+                if (idioma.equals("English")) {
+                    msg_campos_vacios = "Please fill all fields";
+                    msg_contraseñas = "Unequal passwords, please try again";
+                    msg_registro = "Registered succesfully";
+                } else {
+                    msg_campos_vacios = "Por favor rellena todos los campos";
+                    msg_contraseñas = "Las contraseñas no coinciden";
+                    msg_registro = "Registrado exitosamente";
+                }
+
+                // Obtengo los datos introducidos
+                TextView txt_nombre = (TextView) dialog.findViewById(R.id.register_nombre);
+                String nombre = txt_nombre.getText().toString();
+                TextView txt_apellidos = (TextView) dialog.findViewById(R.id.register_apellidos);
+                String apellidos = txt_apellidos.getText().toString();
+                TextView txt_user = (TextView) dialog.findViewById(R.id.register_username);
+                String username = txt_user.getText().toString();
+                TextView txt_pwd = (TextView) dialog.findViewById(R.id.register_password);
+                String pwd = txt_pwd.getText().toString();
+                TextView txt_pwd2 = (TextView) dialog.findViewById(R.id.register_password2);
+                String pwd2 = txt_pwd2.getText().toString();
+
+                if (nombre.equals("") || apellidos.equals("") || username.equals("") || pwd.equals("") || pwd2.equals("")) {
+                    // Alguno de los campos no ha sido rellenado
+                    Toast.makeText(activity_inicio.this, msg_campos_vacios, Toast.LENGTH_SHORT).show();
+                } else if (!pwd.equals(pwd2)) {
+                    // Las dos contraseñas no coinciden
+                    Toast.makeText(activity_inicio.this, msg_contraseñas, Toast.LENGTH_SHORT).show();
+                } else {
+                    // Todos los campos son correctos, realizo el registro
+
+                    // Obtengo la BD
+                    BD_login gestorBD = new BD_login(activity_inicio.this, "miBD", null, 1);
+                    SQLiteDatabase bd = gestorBD.getWritableDatabase();
+
+                    // Introduzco los datos
+                    ContentValues datos = new ContentValues();
+                    datos.put("Username", username);
+                    datos.put("Nombre", nombre);
+                    datos.put("Apellidos", apellidos);
+                    datos.put("Password", pwd);
+
+                    bd.insert("Usuarios", null, datos);
+
+                    Toast.makeText(activity_inicio.this, msg_registro, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
         dialog.show();
     }

@@ -14,7 +14,7 @@
     <string name="login_titulo">No estás logueado</string>
     <string name="login_username">Nombre de usuario</string>
     <string name="login_password">Contraseña</string>
-    <string name="login_registro">¿Es tu primera vez? Regístrate aquí</string>
+    <string name="login_registro">¿Es tu primera vez?\nRegístrate aquí</string>
     <string name="register_titulo">Regístrate</string>
     <string name="register_nombre">Nombre</string>
     <string name="register_apellidos">Apellido(s)</string>

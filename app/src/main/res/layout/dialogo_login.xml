@@ -54,5 +54,8 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
-        android:text="@string/login_registro" />
+        android:clickable="true"
+        android:gravity="center_horizontal"
+        android:text="@string/login_registro"
+        android:textSize="20dp" />
 </LinearLayout>
