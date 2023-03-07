@@ -42,18 +42,10 @@ public class activity_inicio extends AppCompatActivity {
 
         // Cargo la pagina en el idioma elegido
         if (savedInstanceState != null) {
-            String idioma = savedInstanceState.getString("idioma");
+            idiomaAct = savedInstanceState.getString("idioma");
 
-            System.out.println("#");
-            System.out.println("#");
-            System.out.println("#");
-            System.out.println(idioma);
-            System.out.println(idiomaAct);
-
-            idiomaAct = idioma;
             Locale nuevaloc;
-
-            if (idioma.equals("English") || idiomaAct.equals("inglés")) {
+            if (idiomaAct.equals("en")) {
                 nuevaloc = new Locale("en");
             } else {
                 nuevaloc = new Locale("es");
@@ -70,7 +62,6 @@ public class activity_inicio extends AppCompatActivity {
             finish();
             startActivity(getIntent());
         }
-        Toast.makeText(activity_inicio.this, idiomaAct, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -130,10 +121,9 @@ public class activity_inicio extends AppCompatActivity {
                 String msg3;
                 // Obtengo el idioma del dispositivo
                 Locale locale = getResources().getConfiguration().getLocales().get(0);
-                String idioma = locale.getDisplayLanguage();
 
                 // Diferentes mensajes posibles según el idioma
-                if (idiomaAct.equals("English") || idiomaAct.equals("inglés")) {
+                if (idiomaAct.equals("en")) {
                     msg1 = "Write down your username and password";
                     msg2 = "Wrong username or password";
                     msg3 = "Logging in";
@@ -198,12 +188,11 @@ public class activity_inicio extends AppCompatActivity {
             public void onClick(View view) {
                 // Según el idioma seteo los mensajes que van a aparecer
                 Locale locale = getResources().getConfiguration().getLocales().get(0);
-                String idioma = locale.getDisplayLanguage();
 
                 String msg_campos_vacios;
                 String msg_contraseñas;
                 String msg_registro;
-                if (idiomaAct.equals("English") || idiomaAct.equals("inglés")) {
+                if (idiomaAct.equals("en")) {
                     msg_campos_vacios = "Please fill all fields";
                     msg_contraseñas = "Unequal passwords, please try again";
                     msg_registro = "Registered succesfully";
@@ -261,8 +250,7 @@ public class activity_inicio extends AppCompatActivity {
         @Override
         public void onActivityResult(ActivityResult result) {
             Locale locale = getResources().getConfiguration().getLocales().get(0);
-            String idioma = locale.getDisplayLanguage();
-            idiomaAct = idioma;
+            idiomaAct = locale.getLanguage();
 
             finish();
             startActivity(getIntent());

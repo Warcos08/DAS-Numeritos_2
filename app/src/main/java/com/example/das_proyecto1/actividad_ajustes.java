@@ -26,11 +26,10 @@ public class actividad_ajustes extends AppCompatActivity {
 
         // Cargo la pagina en el idioma elegido
         if (savedInstanceState != null) {
-            String idioma = savedInstanceState.getString("idioma");
-            this.idiomaAct = idioma;
-            Locale nuevaloc;
+            idiomaAct = savedInstanceState.getString("idioma");
 
-            if (idioma.equals("English")) {
+            Locale nuevaloc;
+            if (idiomaAct.equals("en")) {
                 nuevaloc = new Locale("en");
             } else {
                 nuevaloc = new Locale("es");
@@ -53,7 +52,7 @@ public class actividad_ajustes extends AppCompatActivity {
         btn_es.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                idiomaAct = "Spanish";
+                idiomaAct = "es";
                 Locale nuevaloc = new Locale("es");
                 Locale.setDefault(nuevaloc);
                 Configuration configuration = getBaseContext().getResources().getConfiguration();
@@ -73,7 +72,7 @@ public class actividad_ajustes extends AppCompatActivity {
         btn_en.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                idiomaAct = "English";
+                idiomaAct = "en";
                 Locale nuevaloc = new Locale("en");
                 Locale.setDefault(nuevaloc);
                 Configuration configuration = getBaseContext().getResources().getConfiguration();
