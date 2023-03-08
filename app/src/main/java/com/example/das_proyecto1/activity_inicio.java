@@ -42,6 +42,7 @@ public class activity_inicio extends AppCompatActivity {
         // Cargo la pagina en el idioma elegido
         if (savedInstanceState != null) {
             idiomaAct = savedInstanceState.getString("idioma");
+            System.out.println("###################### IDIOMA: " + idiomaAct);
 
             Locale nuevaloc;
             if (idiomaAct.equals("en")) {
@@ -115,20 +116,9 @@ public class activity_inicio extends AppCompatActivity {
                 EditText input_password = dialog.findViewById(R.id.login_input_password);
                 String password = input_password.getText().toString();
 
-                String msg1;
-                String msg2;
-                String msg3;
-
-                // Diferentes mensajes posibles según el idioma
-                if (idiomaAct.equals("en")) {
-                    msg1 = "Write down your username and password";
-                    msg2 = "Wrong username or password";
-                    msg3 = "Logging in";
-                } else {
-                    msg1 = "Introduce un usuario y contraseña";
-                    msg2 = "Usuario o contraseña incorrectos";
-                    msg3 = "Logueado correctamente";
-                }
+                String msg1 = getString(R.string.login_msg_campos_vacios);
+                String msg2 = getString(R.string.login_msg_error);
+                String msg3 = getString(R.string.login_msg_log);
 
                 if (user.equals("") || password.equals("")) {
                     // En caso de que no se haya rellenado el formulario mando un mensaje
@@ -187,18 +177,10 @@ public class activity_inicio extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Según el idioma seteo los mensajes que van a aparecer
-                String msg_campos_vacios;
-                String msg_contraseñas;
-                String msg_registro;
-                if (idiomaAct.equals("en")) {
-                    msg_campos_vacios = "Please fill all fields";
-                    msg_contraseñas = "Unequal passwords, please try again";
-                    msg_registro = "Registered succesfully";
-                } else {
-                    msg_campos_vacios = "Por favor rellena todos los campos";
-                    msg_contraseñas = "Las contraseñas no coinciden";
-                    msg_registro = "Registrado exitosamente";
-                }
+                String msg_campos_vacios = getString(R.string.register_msg_campos_vacios);
+                String msg_contraseñas = getString(R.string.register_msg_passwords);
+                String msg_registro = getString(R.string.register_msg_registro);
+
 
                 // Obtengo los datos introducidos
                 TextView txt_nombre = (TextView) dialog.findViewById(R.id.register_nombre);

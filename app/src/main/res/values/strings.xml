@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Numeritos</string>
+    <string name="app_name" translatable="false">Numeritos</string>
     <string name="inicio_logo">NUMERITOS</string>
     <string name="inicio_btn_jugar">Jugar</string>
     <string name="inicio_btn_ranking">Tabla de puntuaciones</string>
@@ -20,8 +20,24 @@
     <string name="register_apellidos">Apellido(s)</string>
     <string name="register_password2">Repite la contraseña</string>
     <string name="register_btn">Registrarse</string>
-    <string name="jugar_puntuacion">Puntuación:</string>
+    <string name="jugar_txt_puntuacion">Puntuación:</string>
     <string name="jugar_respuesta">Responder</string>
     <string name="jugar_instrucciones">Cómo jugar</string>
     <string name="jugar_hint">Tu respuesta</string>
+    <string name="jugar_msg_input_vacio">Por favor introduce tu respuesta</string>
+    <string name="login_msg_campos_vacios">Introduce un usuario y contraseña</string>
+    <string name="login_msg_error">Usuario o contraseña incorrectos</string>
+    <string name="login_msg_log">Logueado correctamente</string>
+    <string name="register_msg_campos_vacios">Por favor rellena todos los campos</string>
+    <string name="register_msg_passwords">Las contraseñas no coinciden</string>
+    <string name="register_msg_registro">Registrado exitosamente</string>
+    <string name="salir_msg">¿Estás seguro que quieres salir?</string>
+    <string name="salir_msg_si">Sí</string>
+    <string name="instrucciones_msg_titulo">Bienvenido a \"El Juego\"</string>
+    <string name="instrucciones_msg">- En este juego, aparecerá un número diferente cada vez en la pantalla. Tu objetivo es introducir ese número además de todos los anteriores en el orden en el que han aparecido. Si fallas, el juego terminará.</string>
+    <string name="instrucciones_msg_btn">Entendido</string>
+    <string name="derrota_msg">¡Has perdido!</string>
+    <string name="derrota_ptos">Puntuación:</string>
+    <string name="derrota_salir">Salir</string>
+    <string name="derrota_compartir">Compartir</string>
 </resources>

@@ -18,28 +18,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/jugar_respuesta"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:text="@string/jugar_instrucciones"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/jugar_input" />
-
-    <Button
-        android:id="@+id/jugar_instrucciones"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="75dp"
-        android:layout_marginEnd="32dp"
-        android:text="@string/jugar_respuesta"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/jugar_input"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
         android:id="@+id/jugar_input"
         android:layout_width="wrap_content"
@@ -51,5 +29,27 @@
         android:inputType="textPersonName"
         app:layout_constraintStart_toEndOf="@+id/include"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/jugar_respuesta"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="75dp"
+        android:layout_marginEnd="32dp"
+        android:text="@string/jugar_respuesta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/jugar_input"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/jugar_instrucciones"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/jugar_instrucciones"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/jugar_input" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Numeritos</string>
     <string name="inicio_logo">NUMBERS</string>
     <string name="inicio_btn_jugar">Play</string>
     <string name="inicio_btn_ranking">Higshcore ranking</string>
@@ -21,8 +20,24 @@
     <string name="register_apellidos">Surname</string>
     <string name="register_password2">Repeat your password</string>
     <string name="register_btn">Register</string>
-    <string name="jugar_puntuacion">"Score: "</string>
+    <string name="jugar_txt_puntuacion">"Score: "</string>
     <string name="jugar_respuesta">Answer</string>
     <string name="jugar_instrucciones">How to play</string>
     <string name="jugar_hint">Your guess</string>
+    <string name="jugar_msg_input_vacio">Please write down an answer</string>
+    <string name="login_msg_campos_vacios">Write down your username and password</string>
+    <string name="login_msg_error">Wrong username or password</string>
+    <string name="login_msg_log">Logging in</string>
+    <string name="register_msg_campos_vacios">Please fill all fields</string>
+    <string name="register_msg_passwords">Unequal passwords, please try again</string>
+    <string name="register_msg_registro">Registered succesfully</string>
+    <string name="salir_msg">Are you sure you want to quit?</string>
+    <string name="salir_msg_si">Yes</string>
+    <string name="instrucciones_msg_titulo">Welcome to \"The Game\"</string>
+    <string name="instrucciones_msg">- In this game, a random number will appear on screen. Your goal is to write down that number and every other one that appeared before in order. If you miss once, the game is over.</string>
+    <string name="instrucciones_msg_btn">Got it</string>
+    <string name="derrota_msg">You\'ve lost!</string>
+    <string name="derrota_ptos">Final score:</string>
+    <string name="derrota_salir">Exit</string>
+    <string name="derrota_compartir">Share</string>
 </resources>

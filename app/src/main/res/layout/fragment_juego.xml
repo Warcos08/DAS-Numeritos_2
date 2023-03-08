@@ -22,16 +22,29 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/jugar_puntuacion"
+        android:id="@+id/jugar_txt_puntuacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/jugar_puntuacion"
+        android:text="@string/jugar_txt_puntuacion"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/jugar_numeros" />
+
+    <TextView
+        android:id="@+id/jugar_ptos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="0"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/jugar_txt_puntuacion"
         app:layout_constraintTop_toBottomOf="@+id/jugar_numeros" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
