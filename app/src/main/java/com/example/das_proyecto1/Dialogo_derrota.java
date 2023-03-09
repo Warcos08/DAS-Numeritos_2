@@ -4,18 +4,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.LocaleList;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import java.util.Locale;
-
-public class dialogo_derrota extends DialogFragment {
+public class Dialogo_derrota extends DialogFragment {
 
     @NonNull
     @Override
@@ -35,7 +29,13 @@ public class dialogo_derrota extends DialogFragment {
 
         builder.setTitle(titulo);
         builder.setMessage(msg);
-        builder.setNegativeButton(salir, null); // La accion de cerrar el dialogo se realiza por defecto
+        builder.setCancelable(false);
+        builder.setNegativeButton(salir, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                getActivity().finish();
+            }
+        });
         builder.setPositiveButton(compartir, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

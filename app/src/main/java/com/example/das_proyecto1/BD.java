@@ -6,10 +6,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-public class BD_login extends SQLiteOpenHelper {
+public class BD extends SQLiteOpenHelper {
 
-    public BD_login(@Nullable Context context, @Nullable String name,
-                    @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    public BD(@Nullable Context context, @Nullable String name,
+              @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 

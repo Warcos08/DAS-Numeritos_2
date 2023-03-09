@@ -4,16 +4,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.LocaleList;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import java.util.Locale;
-
-public class dialogo_salir extends DialogFragment {
+public class Dialogo_salir extends DialogFragment {
 
     @NonNull
     @Override

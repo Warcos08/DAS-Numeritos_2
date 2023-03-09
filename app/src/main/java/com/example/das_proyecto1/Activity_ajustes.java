@@ -12,7 +12,7 @@ import android.widget.Button;
 
 import java.util.Locale;
 
-public class activity_ajustes extends AppCompatActivity {
+public class Activity_ajustes extends AppCompatActivity {
 
     private static String idiomaAct = "";
 

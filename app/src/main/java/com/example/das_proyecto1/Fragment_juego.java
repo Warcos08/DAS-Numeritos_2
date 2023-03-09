@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link fragment_juego#newInstance} factory method to
+ * Use the {@link Fragment_juego#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragment_juego extends Fragment {
+public class Fragment_juego extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +24,7 @@ public class fragment_juego extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public fragment_juego() {
+    public Fragment_juego() {
         // Required empty public constructor
     }
 
@@ -37,8 +37,8 @@ public class fragment_juego extends Fragment {
      * @return A new instance of fragment fragment_juego.
      */
     // TODO: Rename and change types and number of parameters
-    public static fragment_juego newInstance(String param1, String param2) {
-        fragment_juego fragment = new fragment_juego();
+    public static Fragment_juego newInstance(String param1, String param2) {
+        Fragment_juego fragment = new Fragment_juego();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

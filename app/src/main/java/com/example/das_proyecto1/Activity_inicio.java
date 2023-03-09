@@ -26,7 +26,7 @@ import android.widget.Toast;
 
 import java.util.Locale;
 
-public class activity_inicio extends AppCompatActivity {
+public class Activity_inicio extends AppCompatActivity {
 
     // Codigos para gestionar los intents de las diferentes actividades
     private static int resultCodeAjustes = 3;
@@ -87,12 +87,12 @@ public class activity_inicio extends AppCompatActivity {
     }
 
     public void onClickAjustes(View v) {
-        Intent intent = new Intent(activity_inicio.this, activity_ajustes.class);
+        Intent intent = new Intent(Activity_inicio.this, Activity_ajustes.class);
         startActivityIntent.launch(intent);
     }
 
     public void onClickSalir(View v) {
-        DialogFragment dialogo_salir = new dialogo_salir();
+        DialogFragment dialogo_salir = new Dialogo_salir();
         dialogo_salir.show(getSupportFragmentManager(), "dialogo_salir");
     }
 
@@ -122,11 +122,11 @@ public class activity_inicio extends AppCompatActivity {
 
                 if (user.equals("") || password.equals("")) {
                     // En caso de que no se haya rellenado el formulario mando un mensaje
-                    Toast.makeText(activity_inicio.this, msg1, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Activity_inicio.this, msg1, Toast.LENGTH_SHORT).show();
 
                 } else {
                     // Obtengo la BD
-                    BD_login gestorBD = new BD_login(activity_inicio.this, "miBD", null, 1);
+                    BD gestorBD = new BD(Activity_inicio.this, "miBD", null, 1);
                     SQLiteDatabase bd = gestorBD.getWritableDatabase();
 
                     // Compruebo que el usuario se encuentre en la BD
@@ -135,13 +135,13 @@ public class activity_inicio extends AppCompatActivity {
 
                     // Si hay next es que existe ese usuario con esa contraseña
                     if (c.moveToNext()) {
-                        Toast.makeText(activity_inicio.this, msg3, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Activity_inicio.this, msg3, Toast.LENGTH_SHORT).show();
                         // Jugar
-                        Intent intent = new Intent(activity_inicio.this, activity_jugar.class);
+                        Intent intent = new Intent(Activity_inicio.this, Activity_jugar.class);
                         startActivityIntent.launch(intent);
 
                     } else {
-                        Toast.makeText(activity_inicio.this, msg2, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Activity_inicio.this, msg2, Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -196,15 +196,15 @@ public class activity_inicio extends AppCompatActivity {
 
                 if (nombre.equals("") || apellidos.equals("") || username.equals("") || pwd.equals("") || pwd2.equals("")) {
                     // Alguno de los campos no ha sido rellenado
-                    Toast.makeText(activity_inicio.this, msg_campos_vacios, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Activity_inicio.this, msg_campos_vacios, Toast.LENGTH_SHORT).show();
                 } else if (!pwd.equals(pwd2)) {
                     // Las dos contraseñas no coinciden
-                    Toast.makeText(activity_inicio.this, msg_contraseñas, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Activity_inicio.this, msg_contraseñas, Toast.LENGTH_SHORT).show();
                 } else {
                     // Todos los campos son correctos, realizo el registro
 
                     // Obtengo la BD
-                    BD_login gestorBD = new BD_login(activity_inicio.this, "miBD", null, 1);
+                    BD gestorBD = new BD(Activity_inicio.this, "miBD", null, 1);
                     SQLiteDatabase bd = gestorBD.getWritableDatabase();
 
                     // Introduzco los datos
@@ -216,10 +216,10 @@ public class activity_inicio extends AppCompatActivity {
 
                     bd.insert("Usuarios", null, datos);
 
-                    Toast.makeText(activity_inicio.this, msg_registro, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Activity_inicio.this, msg_registro, Toast.LENGTH_SHORT).show();
 
                     // Inicio el juego
-                    Intent intent = new Intent(activity_inicio.this, activity_jugar.class);
+                    Intent intent = new Intent(Activity_inicio.this, Activity_jugar.class);
                     startActivityIntent.launch(intent);
 
                 }
