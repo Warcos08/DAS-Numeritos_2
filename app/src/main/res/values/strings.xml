@@ -40,4 +40,5 @@
     <string name="derrota_ptos">Puntuación:</string>
     <string name="derrota_salir">Salir</string>
     <string name="derrota_compartir">Compartir</string>
+    <string name="ranking_titulo">Tabla de puntuaciones</string>
 </resources>

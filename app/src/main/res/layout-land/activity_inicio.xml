@@ -32,6 +32,7 @@
         android:id="@+id/btn_ranking"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onClickRanking"
         android:text="@string/inicio_btn_ranking"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/btn_jugar"

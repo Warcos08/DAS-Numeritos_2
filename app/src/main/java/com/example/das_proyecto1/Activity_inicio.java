@@ -86,6 +86,11 @@ public class Activity_inicio extends AppCompatActivity {
 
     }
 
+    public void onClickRanking(View v) {
+        Intent intent = new Intent(Activity_inicio.this, Activity_ranking.class);
+        startActivityIntent.launch(intent);
+    }
+
     public void onClickAjustes(View v) {
         Intent intent = new Intent(Activity_inicio.this, Activity_ajustes.class);
         startActivityIntent.launch(intent);

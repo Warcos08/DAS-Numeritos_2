@@ -25,7 +25,7 @@ public class BD extends SQLiteOpenHelper {
 
         // Creacion de la tabla que guarda las puntuaciones
         sqLiteDatabase.execSQL("CREATE TABLE Puntuaciones (" +
-                "'Id' INT NOT NULL PRIMARY KEY, " +
+                "'Id' INTEGER NOT NULL PRIMARY KEY, AUTO_INCREMENT, " +
                 "'Username' VARCHAR(255), " +
                 "'Puntuacion' INT" +
                 ")");
