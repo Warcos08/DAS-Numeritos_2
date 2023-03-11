@@ -43,4 +43,7 @@
     <string name="ranking_titulo">Highscore table</string>
     <string name="login_msg_usuario">Username already exists</string>
     <string name="ajustes_msg_notif">Your settings have been saved</string>
+    <string name="jugar_msg_rank1">You got to the top 1 in the ranking!</string>
+    <string name="jugar_msg_rank2">You got to the top 2 in the ranking!</string>
+    <string name="jugar_msg_rank3">You got to the top 3 in the ranking!</string>
 </resources>

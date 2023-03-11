@@ -251,7 +251,6 @@ public class Activity_inicio extends AppCompatActivity {
     ActivityResultLauncher<Intent> startActivityIntent = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
-
             Locale locale = getResources().getConfiguration().getLocales().get(0);
             idiomaAct = locale.getLanguage();
 

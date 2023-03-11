@@ -43,4 +43,7 @@
     <string name="ranking_titulo">Tabla de puntuaciones</string>
     <string name="login_msg_usuario">El usuario introducido ya existe</string>
     <string name="ajustes_msg_notif">Se ha guardado la configuración</string>
+    <string name="jugar_msg_rank1">¡Has llegado al top 1 del ranking!</string>
+    <string name="jugar_msg_rank2">¡Has llegado al top 2 del ranking!</string>
+    <string name="jugar_msg_rank3">¡Has llegado al top 3 del ranking!</string>
 </resources>
