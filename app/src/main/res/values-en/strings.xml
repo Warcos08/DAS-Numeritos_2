@@ -42,4 +42,5 @@
     <string name="derrota_compartir">Share</string>
     <string name="ranking_titulo">Highscore table</string>
     <string name="login_msg_usuario">Username already exists</string>
+    <string name="ajustes_msg_notif">Your settings have been saved</string>
 </resources>
