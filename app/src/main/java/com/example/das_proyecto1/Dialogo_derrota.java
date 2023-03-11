@@ -3,6 +3,7 @@ package com.example.das_proyecto1;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,8 @@ public class Dialogo_derrota extends DialogFragment {
         builder.setNegativeButton(salir, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent();
+                getActivity().setResult(2, intent);
                 getActivity().finish();
             }
         });

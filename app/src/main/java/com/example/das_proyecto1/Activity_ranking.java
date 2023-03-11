@@ -10,9 +10,9 @@ import android.widget.ListView;
 public class Activity_ranking extends AppCompatActivity {
 
     // Aquello que vamos a mostrar en el ListView
-    int[] imagenes = {R.drawable.gold_trans, R.drawable.silver_trans, R.drawable.bronze_trans, R.drawable.blank_trans, R.drawable.blank_trans};
-    String[] users;
-    int[] ptos;
+    int[] imagenes = {R.drawable.gold_trans, R.drawable.silver_trans, R.drawable.bronze_trans, R.drawable.blank_trans, R.drawable.blank_trans, R.drawable.blank_trans, R.drawable.blank_trans, R.drawable.blank_trans, R.drawable.blank_trans, R.drawable.blank_trans};
+    String[] users = new String[10];
+    int[] ptos = new int[10];
 
     // El ListView
     ListView listView;
@@ -25,17 +25,17 @@ public class Activity_ranking extends AppCompatActivity {
         // Obtener lo que necesitamos mostrar de la BD
         BD gestorBD = new BD(Activity_ranking.this, "miBD", null, 1);
         SQLiteDatabase bd = gestorBD.getReadableDatabase();
-        Cursor cursor = bd.rawQuery("SELECT Username, Puntuacion " +
+        Cursor cursor = bd.rawQuery("SELECT * " +
                                         "FROM Puntuaciones " +
-                                        "ORDER BY Puntuaciones DESC " +
-                                        "LIMIT 5", null);
+                                        "ORDER BY Puntuacion DESC " +
+                                        "LIMIT 10", null);
 
         // Meto la info en las variables
         int i = 0;
         while(cursor.moveToNext()) {
-            users[i] = cursor.getString(0);
+            users[i] = cursor.getString(1);
             System.out.println(users[i]);
-            ptos[i] = cursor.getInt(1);
+            ptos[i] = cursor.getInt(2);
             System.out.println(ptos[i]);
             i++;
         }

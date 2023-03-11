@@ -83,7 +83,6 @@ public class Activity_inicio extends AppCompatActivity {
             showDialogoLogin();
         }
 
-
     }
 
     public void onClickRanking(View v) {
@@ -141,8 +140,13 @@ public class Activity_inicio extends AppCompatActivity {
                     // Si hay next es que existe ese usuario con esa contraseña
                     if (c.moveToNext()) {
                         Toast.makeText(Activity_inicio.this, msg3, Toast.LENGTH_SHORT).show();
-                        // Jugar
+                        // Obtengo el username
+                        String username = c.getString(0);
+                        System.out.println("############### " + username);
+                        System.out.println("############### " + user);
+                        // Paso a la actividad jugar
                         Intent intent = new Intent(Activity_inicio.this, Activity_jugar.class);
+                        intent.putExtra("username", username);
                         startActivityIntent.launch(intent);
 
                     } else {
@@ -185,6 +189,7 @@ public class Activity_inicio extends AppCompatActivity {
                 String msg_campos_vacios = getString(R.string.register_msg_campos_vacios);
                 String msg_contraseñas = getString(R.string.register_msg_passwords);
                 String msg_registro = getString(R.string.register_msg_registro);
+                String msg_usuario = getString(R.string.login_msg_usuario);
 
 
                 // Obtengo los datos introducidos
@@ -199,18 +204,24 @@ public class Activity_inicio extends AppCompatActivity {
                 TextView txt_pwd2 = (TextView) dialog.findViewById(R.id.register_password2);
                 String pwd2 = txt_pwd2.getText().toString();
 
+                // Obtengo la BD
+                BD gestorBD = new BD(Activity_inicio.this, "miBD", null, 1);
+                SQLiteDatabase bd = gestorBD.getWritableDatabase();
+
+                // Miro en la BD si ya existe un username con ese nombre
+                Cursor c = bd.rawQuery("SELECT Username FROM Usuarios WHERE Username = " + "'" + username + "'", null);
+
                 if (nombre.equals("") || apellidos.equals("") || username.equals("") || pwd.equals("") || pwd2.equals("")) {
                     // Alguno de los campos no ha sido rellenado
                     Toast.makeText(Activity_inicio.this, msg_campos_vacios, Toast.LENGTH_SHORT).show();
                 } else if (!pwd.equals(pwd2)) {
                     // Las dos contraseñas no coinciden
                     Toast.makeText(Activity_inicio.this, msg_contraseñas, Toast.LENGTH_SHORT).show();
+                } else if (c.moveToNext()) {
+                    // Existe un usuario con ese nombre registrado
+                    Toast.makeText(Activity_inicio.this, msg_usuario, Toast.LENGTH_SHORT).show();
                 } else {
                     // Todos los campos son correctos, realizo el registro
-
-                    // Obtengo la BD
-                    BD gestorBD = new BD(Activity_inicio.this, "miBD", null, 1);
-                    SQLiteDatabase bd = gestorBD.getWritableDatabase();
 
                     // Introduzco los datos
                     ContentValues datos = new ContentValues();
@@ -225,6 +236,7 @@ public class Activity_inicio extends AppCompatActivity {
 
                     // Inicio el juego
                     Intent intent = new Intent(Activity_inicio.this, Activity_jugar.class);
+                    intent.putExtra("username", username);
                     startActivityIntent.launch(intent);
 
                 }

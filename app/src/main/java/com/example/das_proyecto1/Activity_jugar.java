@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,12 +22,19 @@ public class Activity_jugar extends AppCompatActivity {
 
     private static String idiomaAct = "";
     private static Juego miJuego;
+    private static String username = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jugar);
         System.out.println("###################### onCREATE ######################");
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            username = extras.getString("username");
+        }
+        System.out.println("###################### USER: " + username);
 
 
         if (savedInstanceState != null) {
@@ -83,7 +93,19 @@ public class Activity_jugar extends AppCompatActivity {
                 } else if (!miJuego.comprobarRespuesta(Integer.parseInt(respuesta))) {
                     // Si la respuesta es incorrecta
 
-                    // Guardar la puntuacion en la BD / fichero de texto
+                    // Guardar la puntuacion en la BD
+                    BD gestorBD = new BD(Activity_jugar.this, "miBD", null, 1);
+                    SQLiteDatabase bd = gestorBD.getReadableDatabase();
+
+                    // Obtengo el username del intent
+
+
+                    ContentValues datos = new ContentValues();
+                    datos.put("Username", username);
+                    datos.put("Puntuacion", miJuego.getPuntuacion());
+
+                    bd.insert("Puntuaciones", null, datos);
+
 
                     // Dialogo de "Has perdido"
                     Bundle args = new Bundle();
@@ -145,13 +167,6 @@ public class Activity_jugar extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-
-        // Guardo el num, la puntuacion y el idioma
-        /*
-        savedInstanceState.putInt("num", num);
-        savedInstanceState.putInt("ptos", ptos);
-        savedInstanceState.putInt("cifra", cifra);
-        */
 
         idiomaAct = getResources().getConfiguration().getLocales().get(0).getLanguage();
         savedInstanceState.putString("idioma", idiomaAct);
