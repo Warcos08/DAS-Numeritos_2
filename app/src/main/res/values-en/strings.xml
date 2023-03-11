@@ -11,7 +11,7 @@
     <string name="ajustes_text_usuario">Username:</string>
     <string name="ajustes_btn_salir">Return to title screen</string>
     <string name="ajustes_btn_preferencias">Preferences</string>
-    <string name="login_titulo">You are not logged in</string>
+    <string name="login_titulo">Who is playing?</string>
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>
     <string name="login_registro">First timer? Register here</string>
@@ -33,7 +33,7 @@
     <string name="register_msg_registro">Registered succesfully</string>
     <string name="salir_msg">Are you sure you want to quit?</string>
     <string name="salir_msg_si">Yes</string>
-    <string name="instrucciones_msg_titulo">Welcome to \"The Game\"</string>
+    <string name="instrucciones_msg_titulo">Welcome to Numeritos</string>
     <string name="instrucciones_msg">- In this game, a random number will appear on screen. Your goal is to write down that number and every other one that appeared before in order. If you miss once, the game is over.</string>
     <string name="instrucciones_msg_btn">Got it</string>
     <string name="derrota_msg">You\'ve lost!</string>
@@ -46,4 +46,6 @@
     <string name="jugar_msg_rank1">You got to the top 1 in the ranking!</string>
     <string name="jugar_msg_rank2">You got to the top 2 in the ranking!</string>
     <string name="jugar_msg_rank3">You got to the top 3 in the ranking!</string>
+    <string name="derrota_msg_compartir">"I played Numeritos and got a score of "</string>
+    <string name="derrota_msg_via">Share via:</string>
 </resources>

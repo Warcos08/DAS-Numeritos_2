@@ -11,7 +11,7 @@
     <string name="ajustes_text_usuario">Usuario:</string>
     <string name="ajustes_btn_salir">Volver a inicio</string>
     <string name="ajustes_btn_preferencias">Preferencias</string>
-    <string name="login_titulo">No estás logueado</string>
+    <string name="login_titulo">¿Quién va a jugar?</string>
     <string name="login_username">Nombre de usuario</string>
     <string name="login_password">Contraseña</string>
     <string name="login_registro">¿Es tu primera vez?\nRegístrate aquí</string>
@@ -33,7 +33,7 @@
     <string name="register_msg_registro">Registrado exitosamente</string>
     <string name="salir_msg">¿Estás seguro que quieres salir?</string>
     <string name="salir_msg_si">Sí</string>
-    <string name="instrucciones_msg_titulo">Bienvenido a \"El Juego\"</string>
+    <string name="instrucciones_msg_titulo">Bienvenido a Numeritos</string>
     <string name="instrucciones_msg">- En este juego, aparecerá un número diferente cada vez en la pantalla. Tu objetivo es introducir ese número además de todos los anteriores en el orden en el que han aparecido. Si fallas, el juego terminará.</string>
     <string name="instrucciones_msg_btn">Entendido</string>
     <string name="derrota_msg">¡Has perdido!</string>
@@ -46,4 +46,6 @@
     <string name="jugar_msg_rank1">¡Has llegado al top 1 del ranking!</string>
     <string name="jugar_msg_rank2">¡Has llegado al top 2 del ranking!</string>
     <string name="jugar_msg_rank3">¡Has llegado al top 3 del ranking!</string>
+    <string name="derrota_msg_compartir">¡He jugado a Numeritos y he obtenido una puntuación de</string>
+    <string name="derrota_msg_via">Compartir via:</string>
 </resources>

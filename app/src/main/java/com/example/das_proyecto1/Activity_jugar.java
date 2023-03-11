@@ -121,7 +121,7 @@ public class Activity_jugar extends AppCompatActivity {
                         notifManager.createNotificationChannel(elCanal);
                     }
 
-                    elBuilder.setSmallIcon(R.drawable.gold_trans)
+                    elBuilder.setSmallIcon(R.drawable.logo)
                             .setContentTitle("NUMERITOS")
                             .setVibrate(new long[]{0, 1000, 500, 1000})
                             .setAutoCancel(true);

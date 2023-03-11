@@ -120,7 +120,7 @@ public class Activity_ajustes extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     NotificationChannel elCanal = new NotificationChannel("notifCanal", "notifAjustes", NotificationManager.IMPORTANCE_DEFAULT);
                     // Caracteristicas de la notificacion
-                    elBuilder.setSmallIcon(R.drawable.gold_trans)
+                    elBuilder.setSmallIcon(R.drawable.logo)
                             //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.gold_trans))
                             .setContentTitle("NUMERITOS")
                             .setContentText(getString(R.string.ajustes_msg_notif))

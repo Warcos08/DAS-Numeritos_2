@@ -42,7 +42,16 @@ public class Dialogo_derrota extends DialogFragment {
         builder.setPositiveButton(compartir, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                System.out.println("####################### Aqui deberia ir algo de compartir yoquese");
+                // Obtengo el score que viene de la actividad
+                Bundle args = getArguments();
+                String ptos = Integer.toString(args.getInt("ptos"));
+
+                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String shareBody = getString(R.string.derrota_msg_compartir) + " " + ptos + "!";
+                intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+                intent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(intent, getString(R.string.derrota_msg_via)));
             }
         });
 
