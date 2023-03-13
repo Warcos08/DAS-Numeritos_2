@@ -29,6 +29,7 @@
         android:ems="10"
         android:hint="@string/jugar_hint"
         android:inputType="number"
+        android:longClickable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

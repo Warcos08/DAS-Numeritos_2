@@ -96,6 +96,7 @@ public class Activity_inicio extends AppCompatActivity {
     }
 
     public void onClickSalir(View v) {
+        //deleteDatabase("miBD");
         DialogFragment dialogo_salir = new Dialogo_salir();
         dialogo_salir.show(getSupportFragmentManager(), "dialogo_salir");
     }

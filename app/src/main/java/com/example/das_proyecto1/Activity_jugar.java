@@ -9,6 +9,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -131,22 +132,24 @@ public class Activity_jugar extends AppCompatActivity {
                             // Notificacion de que estas primero
                             elBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.gold_trans))
                                     .setContentText(getString(R.string.jugar_msg_rank1));
+                            notifManager.notify(12, elBuilder.build());
                             break;
                         case 1:
                             // Notificacion de que estas segundo
                             elBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.silver_trans))
                                     .setContentText(getString(R.string.jugar_msg_rank2));
+                            notifManager.notify(12, elBuilder.build());
                             break;
                         case 2:
                             // Notificacion de que estas tercero
                             elBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.bronze_trans))
                                     .setContentText(getString(R.string.jugar_msg_rank3));
+                            notifManager.notify(12, elBuilder.build());
                             break;
                         default:
                             break;
                     }
 
-                    notifManager.notify(12, elBuilder.build());
 
                     // Dialogo de "Has perdido"
                     Bundle args = new Bundle();
@@ -195,12 +198,19 @@ public class Activity_jugar extends AppCompatActivity {
         super.onStart();
         System.out.println("###################### onSTART ######################");
 
-        // Actualizo los elementos de la vista
-        TextView txt_ptos = (TextView) findViewById(R.id.jugar_ptos);
-        txt_ptos.setText(Integer.toString(miJuego.getPuntuacion()));
+        // Al volver de compartir la puntuacion termino la actividad
+        if (miJuego == null) {
+            Intent intent = new Intent();
+            setResult(1, intent);
+            finish();
+        } else {
+            // Actualizo los elementos de la vista
+            TextView txt_ptos = (TextView) findViewById(R.id.jugar_ptos);
+            txt_ptos.setText(Integer.toString(miJuego.getPuntuacion()));
 
-        TextView txt_num = (TextView) findViewById(R.id.jugar_numeros);
-        txt_num.setText(Integer.toString(miJuego.getCifra()));
+            TextView txt_num = (TextView) findViewById(R.id.jugar_numeros);
+            txt_num.setText(Integer.toString(miJuego.getCifra()));
+        }
     }
 
 

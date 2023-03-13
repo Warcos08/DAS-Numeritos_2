@@ -46,11 +46,11 @@ public class Dialogo_derrota extends DialogFragment {
                 Bundle args = getArguments();
                 String ptos = Integer.toString(args.getInt("ptos"));
 
-                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 String shareBody = getString(R.string.derrota_msg_compartir) + " " + ptos + "!";
-                intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
-                intent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.derrota_msg_via));
+                intent.putExtra(Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(intent, getString(R.string.derrota_msg_via)));
             }
         });
