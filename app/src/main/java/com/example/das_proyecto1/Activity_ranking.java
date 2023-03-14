@@ -22,6 +22,8 @@ public class Activity_ranking extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking);
 
+        getSupportActionBar().setTitle(getString(R.string.ranking_titulo));
+
         // Obtener lo que necesitamos mostrar de la BD
         BD gestorBD = new BD(Activity_ranking.this, "miBD", null, 1);
         SQLiteDatabase bd = gestorBD.getReadableDatabase();
@@ -48,6 +50,7 @@ public class Activity_ranking extends AppCompatActivity {
         }
 
         listView = (ListView) findViewById(R.id.ranking_list);
+        listView.setEnabled(false);
         // Le paso al adapter lo que necesita
         CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), imagenes, users, ptos);
         listView.setAdapter(customAdapter);

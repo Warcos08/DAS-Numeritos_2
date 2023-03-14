@@ -30,7 +30,6 @@ public class Dialogo_derrota extends DialogFragment {
 
         builder.setTitle(titulo);
         builder.setMessage(msg);
-        builder.setCancelable(false);
         builder.setNegativeButton(salir, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

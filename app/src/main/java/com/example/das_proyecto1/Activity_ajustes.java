@@ -53,6 +53,9 @@ public class Activity_ajustes extends AppCompatActivity {
             startActivity(getIntent());
         }
 
+        getSupportActionBar().setTitle(getString(R.string.ajustes_text_ajustes));
+
+
         // Cambiar a español
         Button btn_es = (Button) findViewById(R.id.ajustes_btnES);
         btn_es.setOnClickListener(new View.OnClickListener() {
@@ -90,15 +93,6 @@ public class Activity_ajustes extends AppCompatActivity {
 
                 finish();
                 startActivity(getIntent());
-            }
-        });
-
-        // Abrir las preferencias
-        Button btn_preferencias = (Button) findViewById(R.id.ajustes_btn_preferencias);
-        btn_preferencias.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Abrir la actividad / fragment con las preferencias
             }
         });
 

@@ -156,6 +156,7 @@ public class Activity_jugar extends AppCompatActivity {
                     args.putInt("ptos", miJuego.getPuntuacion());
                     miJuego = null;     // Termino la partida
                     DialogFragment dialogo_derrota = new Dialogo_derrota();
+                    dialogo_derrota.setCancelable(false);
                     dialogo_derrota.setArguments(args);
                     dialogo_derrota.show(getSupportFragmentManager(), "dialogo_derrota");
 

@@ -11,20 +11,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="56dp"
         android:text="@string/ajustes_text_idioma"
-        app:layout_constraintBottom_toTopOf="@+id/ajustes_btn_salir"
+        android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/ajustes_btnES"
         app:layout_constraintHorizontal_bias="0.583"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_ajustes" />
-
-    <TextView
-        android:id="@+id/text_ajustes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
-        android:text="@string/ajustes_text_ajustes"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,41 +24,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="150dp"
+        android:layout_marginTop="48dp"
         android:text="Español"
-        app:layout_constraintBottom_toTopOf="@+id/ajustes_btn_salir"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_ajustes" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/ajustes_btnEN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="8dp"
         android:text="English"
-        app:layout_constraintBottom_toTopOf="@+id/ajustes_btn_salir"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ajustes_btnES"
-        app:layout_constraintTop_toBottomOf="@+id/text_ajustes" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <fragment
+        android:id="@+id/fragment_preferencias"
+        android:name="com.example.das_proyecto1.Fragment_preferencias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ajustes_btnES">
+
+    </fragment>
 
     <Button
         android:id="@+id/ajustes_btn_salir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/ajustes_btn_salir"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/ajustes_btn_preferencias"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ajustes_btn_preferencias"
-        app:layout_constraintBottom_toTopOf="@+id/ajustes_btn_salir"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ajustes_btnES" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_preferencias" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
