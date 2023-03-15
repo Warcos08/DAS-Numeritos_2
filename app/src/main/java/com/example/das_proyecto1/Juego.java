@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class Juego {
 
-    private static int num;
+    private static long num;
     private static int cifra;
     private static int puntuacion;
 
@@ -42,7 +42,7 @@ public class Juego {
         return cifra;
     }
 
-    public boolean comprobarRespuesta(int res) {
+    public boolean comprobarRespuesta(long res) {
         return res == num;
     }
 
@@ -52,7 +52,7 @@ public class Juego {
 
 
     // Getters
-    public int getNum() {
+    public long getNum() {
         return num;
     }
 

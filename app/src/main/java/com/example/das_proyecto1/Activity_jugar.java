@@ -96,7 +96,7 @@ public class Activity_jugar extends AppCompatActivity {
                 if (respuesta.equals("")) {
                     // Si la respuesta esta vacía
                     Toast.makeText(Activity_jugar.this, msg_inputVacio, Toast.LENGTH_SHORT).show();
-                } else if (!miJuego.comprobarRespuesta(Integer.parseInt(respuesta))) {
+                } else if (!miJuego.comprobarRespuesta(Long.parseLong(respuesta))) {
                     // Si la respuesta es incorrecta
 
                     // Guardar la puntuacion en la BD
