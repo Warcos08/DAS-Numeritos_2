@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory>
+
+        <ListPreference
+            android:dialogTitle="Elige un tema"
+            android:entries="@array/temas"
+            android:entryValues="@array/temas"
+            android:key="temaPref"
+            app:useSimpleSummaryProvider="true"
+            android:title="Tema de la aplicación" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
