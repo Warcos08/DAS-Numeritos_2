@@ -12,6 +12,12 @@ import androidx.fragment.app.DialogFragment;
 
 public class Dialogo_derrota extends DialogFragment {
 
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        getActivity().finish();
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -33,9 +39,7 @@ public class Dialogo_derrota extends DialogFragment {
         builder.setNegativeButton(salir, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent();
-                getActivity().setResult(2, intent);
-                getActivity().finish();
+                dismiss();
             }
         });
         builder.setPositiveButton(compartir, new DialogInterface.OnClickListener() {

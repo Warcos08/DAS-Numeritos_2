@@ -27,11 +27,7 @@ import android.widget.Toast;
 import java.util.Locale;
 
 public class Activity_inicio extends AppCompatActivity {
-
-    // Codigos para gestionar los intents de las diferentes actividades
-    private static int resultCodeAjustes = 3;
     private static String idiomaAct = "";
-
 
     // Metodos del ciclo de vida de la actividad
     @Override
@@ -68,21 +64,7 @@ public class Activity_inicio extends AppCompatActivity {
     // Metodos onClick
 
     public void onClickJugar(View v) {
-        // El usuario se puede definir como parte de las preferencias
-        // En caso de no estar logueado, deberia saltar un dialogo que de opcion de hacer login o register
-        // notificacion cuando te logueas/registras con exito??
-
-        // Cojo el nombre del usuario logueado
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.contains("username")) {
-            // Ir a la pantalla de juego
-            System.out.println("CON USERNAME");
-        } else {
-            // Opcion de loguearse
-            System.out.println("SIN USERNAME");
-            showDialogoLogin();
-        }
-
+        showDialogoLogin();
     }
 
     public void onClickRanking(View v) {
@@ -96,7 +78,7 @@ public class Activity_inicio extends AppCompatActivity {
     }
 
     public void onClickSalir(View v) {
-        //deleteDatabase("miBD");
+        deleteDatabase("miBD");
         DialogFragment dialogo_salir = new Dialogo_salir();
         dialogo_salir.show(getSupportFragmentManager(), "dialogo_salir");
     }
@@ -145,7 +127,8 @@ public class Activity_inicio extends AppCompatActivity {
                         String username = c.getString(0);
                         System.out.println("############### " + username);
                         System.out.println("############### " + user);
-                        // Paso a la actividad jugar
+                        // Paso a la actividad jugar y cierro el dialogo
+                        dialog.dismiss();
                         Intent intent = new Intent(Activity_inicio.this, Activity_jugar.class);
                         intent.putExtra("username", username);
                         startActivityIntent.launch(intent);
