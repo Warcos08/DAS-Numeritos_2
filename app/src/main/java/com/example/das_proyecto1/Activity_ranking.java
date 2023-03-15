@@ -55,4 +55,11 @@ public class Activity_ranking extends AppCompatActivity {
         CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), imagenes, users, ptos);
         listView.setAdapter(customAdapter);
     }
+
+    @Override
+    public void onBackPressed() {
+        // Para que la actividad no siga activa al salir de ella
+        super.onBackPressed();
+        finish();
+    }
 }
