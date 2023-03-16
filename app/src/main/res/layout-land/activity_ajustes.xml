@@ -10,20 +10,10 @@
         android:id="@+id/fragment_preferencias"
         android:name="com.example.das_proyecto1.Fragment_preferencias"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
     </fragment>
-
-    <Button
-        android:id="@+id/ajustes_btn_salir"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="15dp"
-        android:text="@string/ajustes_btn_salir" />
 
 </LinearLayout>

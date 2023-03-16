@@ -2,6 +2,7 @@ package com.example.das_proyecto1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -60,6 +61,8 @@ public class Activity_ranking extends AppCompatActivity {
     public void onBackPressed() {
         // Para que la actividad no siga activa al salir de ella
         super.onBackPressed();
+        Intent intent = new Intent();
+        setResult(2, intent);
         finish();
     }
 }

@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.preference.PreferenceManager;
 
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -17,7 +18,6 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,6 +34,33 @@ public class Activity_inicio extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
+
+        // Miro que tema ha sido elegido
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String tema = prefs.getString("temaPref", null);
+        switch(tema) {
+            case "claro":
+                System.out.println("##############" + tema + " ##############");
+                setTheme(R.style.tema_claro);
+                break;
+            case "oscuro":
+                System.out.println("############## " + tema + " ##############");
+                setTheme(R.style.tema_claro);
+                break;
+            case "bosque":
+                System.out.println("############## " + tema + " ##############");
+                setTheme(R.style.tema_bosque);
+                break;
+            case "mar":
+                System.out.println("############## " + tema + " ##############");
+                setTheme(R.style.tema_mar);
+                break;
+            default:
+                System.out.println("############## OTRO ##############");
+                setTheme(R.style.tema_claro);
+                break;
+        }
+
 
         // Cargo la pagina en el idioma elegido
         if (savedInstanceState != null) {
@@ -58,6 +85,8 @@ public class Activity_inicio extends AppCompatActivity {
             finish();
             startActivity(getIntent());
         }
+
+
     }
 
 

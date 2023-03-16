@@ -54,7 +54,6 @@ public class Activity_ajustes extends AppCompatActivity {
                 break;
         }
 
-
         // Cargo la pagina en el idioma elegido
         if (savedInstanceState != null) {
             idiomaAct = savedInstanceState.getString("idioma");
@@ -80,6 +79,7 @@ public class Activity_ajustes extends AppCompatActivity {
 
         getSupportActionBar().setTitle(getString(R.string.ajustes_text_ajustes));
 
+        /*
         // Volver a inicio
         Button btn_salir = (Button) findViewById(R.id.ajustes_btn_salir);
         btn_salir.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +115,17 @@ public class Activity_ajustes extends AppCompatActivity {
                 finish();
             }
         });
+        */
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Para que la actividad no siga activa al salir de ella
+        super.onBackPressed();
+        Intent intent = new Intent();
+        setResult(3, intent);
+        finish();
     }
 
     // Para guardar la info cuando se rote la pantalla

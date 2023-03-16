@@ -16,10 +16,10 @@
     </string-array>
 
     <string-array name="temas_valor">
-        <item></item>
-        <item>Dark</item>
-        <item>Theme.Bosque</item>
-        <item>Theme.Mar</item>
+        <item>claro</item>
+        <item>oscuro</item>
+        <item>bosque</item>
+        <item>mar</item>
     </string-array>
 
 </resources>
