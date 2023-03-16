@@ -10,11 +10,16 @@
         <item>reply_all</item>
     </string-array>
 
-    <string-array name="temas">
-        <item>Claro</item>
-        <item>Oscuro</item>
-        <item>Bosque</item>
-        <item>Mar</item>
+    <string-array name="idiomas_valor">
+        <item>es</item>
+        <item>en</item>
+    </string-array>
+
+    <string-array name="temas_valor">
+        <item></item>
+        <item>Dark</item>
+        <item>Theme.Bosque</item>
+        <item>Theme.Mar</item>
     </string-array>
 
 </resources>

@@ -6,11 +6,10 @@
     <string name="inicio_btn_ajustes">Settings</string>
     <string name="inicio_btn_salir">Quit game</string>
     <string name="inicio_btn_instrucciones">How to play</string>
-    <string name="ajustes_text_idioma">Language:</string>
+    <string name="ajustes_pref_idioma">App language</string>
     <string name="ajustes_text_ajustes">Settings</string>
     <string name="ajustes_text_usuario">Username:</string>
     <string name="ajustes_btn_salir">Return to title screen</string>
-    <string name="ajustes_btn_preferencias">Preferences</string>
     <string name="login_titulo">Who is playing?</string>
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>
@@ -48,4 +47,18 @@
     <string name="jugar_msg_rank3">You got to the top 3 in the ranking!</string>
     <string name="derrota_msg_compartir">"I played Numeritos and got a score of "</string>
     <string name="derrota_msg_via">Share via:</string>
+    <string name="ajustes_title_idioma">Choose a language:</string>
+    <string-array name="idiomas">
+        <item>Español</item>
+        <item>English</item>
+    </string-array>
+    <string name="ajustes_pref_tema">App theme</string>
+    <string name="ajustes_title_tema">Choose a theme:</string>
+    <string-array name="temas">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>Forest</item>
+        <item>Sea</item>
+    </string-array>
+    <string name="ajustes_pref_notifs">Turn on notifications</string>
 </resources>

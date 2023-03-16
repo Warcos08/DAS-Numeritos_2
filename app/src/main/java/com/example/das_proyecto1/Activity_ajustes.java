@@ -5,11 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.BitmapFactory;
@@ -29,6 +31,29 @@ public class Activity_ajustes extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ajustes);
+
+        // Si no se tienen permisos para notificaciones, se piden
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)!= PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 11);
+        }
+
+        // Miro que tema ha sido elegido
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        switch(prefs.getString("temaPref", null)) {
+            case "Theme.Bosque":
+                System.out.println("############## BOSQUE ##############");
+                setTheme(R.style.Theme_Bosque);
+                break;
+            case "Theme.Mar":
+                System.out.println("############## MAR ##############");
+                setTheme(R.style.Theme_Mar);
+                break;
+            default:
+                System.out.println("############## OTRO ##############");
+                setTheme((R.style.Theme_DAS_Proyecto1));
+                break;
+        }
+
 
         // Cargo la pagina en el idioma elegido
         if (savedInstanceState != null) {
@@ -54,47 +79,6 @@ public class Activity_ajustes extends AppCompatActivity {
         }
 
         getSupportActionBar().setTitle(getString(R.string.ajustes_text_ajustes));
-
-
-        // Cambiar a español
-        Button btn_es = (Button) findViewById(R.id.ajustes_btnES);
-        btn_es.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                idiomaAct = "es";
-                Locale nuevaloc = new Locale("es");
-                Locale.setDefault(nuevaloc);
-                Configuration configuration = getBaseContext().getResources().getConfiguration();
-                configuration.setLocale(nuevaloc);
-                configuration.setLayoutDirection(nuevaloc);
-
-                Context context = getBaseContext().createConfigurationContext(configuration);
-                getBaseContext().getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
-
-                finish();
-                startActivity(getIntent());
-            }
-        });
-
-        // Cambiar a ingles
-        Button btn_en = (Button) findViewById(R.id.ajustes_btnEN);
-        btn_en.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                idiomaAct = "en";
-                Locale nuevaloc = new Locale("en");
-                Locale.setDefault(nuevaloc);
-                Configuration configuration = getBaseContext().getResources().getConfiguration();
-                configuration.setLocale(nuevaloc);
-                configuration.setLayoutDirection(nuevaloc);
-
-                Context context = getBaseContext().createConfigurationContext(configuration);
-                getBaseContext().getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
-
-                finish();
-                startActivity(getIntent());
-            }
-        });
 
         // Volver a inicio
         Button btn_salir = (Button) findViewById(R.id.ajustes_btn_salir);

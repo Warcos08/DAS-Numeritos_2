@@ -5,12 +5,26 @@
     <PreferenceCategory>
 
         <ListPreference
-            android:dialogTitle="Elige un tema"
+            android:dialogTitle="@string/ajustes_title_idioma"
+            android:defaultValue="Español"
+            android:entries="@array/idiomas"
+            android:entryValues="@array/idiomas_valor"
+            android:key="idiomaPref"
+            app:useSimpleSummaryProvider="true"
+            android:title="@string/ajustes_pref_idioma" />
+
+        <ListPreference
+            android:dialogTitle="@string/ajustes_title_tema"
+            android:defaultValue="1"
             android:entries="@array/temas"
-            android:entryValues="@array/temas"
+            android:entryValues="@array/temas_valor"
             android:key="temaPref"
             app:useSimpleSummaryProvider="true"
-            android:title="Tema de la aplicación" />
+            android:title="@string/ajustes_pref_tema" />
+
+        <SwitchPreferenceCompat
+            android:key="notifPref"
+            android:title="@string/ajustes_pref_notifs" />
 
     </PreferenceCategory>
 
