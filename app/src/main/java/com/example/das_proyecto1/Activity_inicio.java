@@ -27,31 +27,28 @@ import android.widget.Toast;
 import java.util.Locale;
 
 public class Activity_inicio extends AppCompatActivity {
-    private static String idiomaAct = "";
 
     // Metodos del ciclo de vida de la actividad
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inicio);
 
         // Miro que tema ha sido elegido
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String tema = prefs.getString("temaPref", null);
+        String tema = prefs.getString("temaPref", "1");
         switch(tema) {
-            case "claro":
+            case "1":
                 System.out.println("##############" + tema + " ##############");
                 setTheme(R.style.tema_claro);
                 break;
-            case "oscuro":
+            case "2":
                 System.out.println("############## " + tema + " ##############");
                 setTheme(R.style.tema_claro);
                 break;
-            case "bosque":
+            case "3":
                 System.out.println("############## " + tema + " ##############");
                 setTheme(R.style.tema_bosque);
                 break;
-            case "mar":
+            case "4":
                 System.out.println("############## " + tema + " ##############");
                 setTheme(R.style.tema_mar);
                 break;
@@ -61,34 +58,36 @@ public class Activity_inicio extends AppCompatActivity {
                 break;
         }
 
-
         // Cargo la pagina en el idioma elegido
-        if (savedInstanceState != null) {
-            idiomaAct = savedInstanceState.getString("idioma");
-            System.out.println("###################### IDIOMA: " + idiomaAct);
-
-            Locale nuevaloc;
-            if (idiomaAct.equals("en")) {
-                nuevaloc = new Locale("en");
-            } else {
-                nuevaloc = new Locale("es");
-            }
-
-            Locale.setDefault(nuevaloc);
-            Configuration configuration = getBaseContext().getResources().getConfiguration();
-            configuration.setLocale(nuevaloc);
-            configuration.setLayoutDirection(nuevaloc);
-
-            Context context = getBaseContext().createConfigurationContext(configuration);
-            getBaseContext().getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
-
-            finish();
-            startActivity(getIntent());
+        Locale nuevaloc;
+        if (prefs.getString("idiomaPref", "1").equals("2")) {
+            nuevaloc = new Locale("en");
+        } else {
+            nuevaloc = new Locale("es");
         }
 
+        Locale.setDefault(nuevaloc);
+        Configuration configuration = getBaseContext().getResources().getConfiguration();
+        configuration.setLocale(nuevaloc);
+        configuration.setLayoutDirection(nuevaloc);
+
+        Context context = getBaseContext().createConfigurationContext(configuration);
+        getBaseContext().getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
+
+        super.onCreate(savedInstanceState);
+
+        /** Codigo extraído de StackOverflow para esconder la ActionBar
+         Pregunta: https://stackoverflow.com/questions/36236181/how-to-remove-title-bar-from-the-android-activity
+         Autor de la respuesta: https://stackoverflow.com/users/2984712/christer
+         **/
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){}
+        setContentView(R.layout.activity_inicio);
 
     }
-
 
     // Metodos onClick
 
@@ -107,13 +106,18 @@ public class Activity_inicio extends AppCompatActivity {
     }
 
     public void onClickSalir(View v) {
-        deleteDatabase("miBD");
         DialogFragment dialogo_salir = new Dialogo_salir();
         dialogo_salir.show(getSupportFragmentManager(), "dialogo_salir");
     }
 
 
     // Funcion que crea el dialogo de login
+    /** Basado en el codigo extraído de las siguientes fuentes
+     * Youtube: https://www.youtube.com/watch?time_continue=34&v=W4qqTcxqq48&embeds_euri=https%3A%2F%2Fwww.google.com%2F&feature=emb_logo
+     * Geeks for Geeks: https://www.geeksforgeeks.org/how-to-create-dialog-with-custom-layout-in-android/
+     Utilizado para mostrar el dialogo y aplicarle el layout correspondiente, adaptado a que tenga el aspecto y funcionalidades de
+     la aplicacion
+     **/
     void showDialogoLogin() {
         // Creo el dialogo de login con el layout
         Dialog dialog = new Dialog(this);
@@ -186,6 +190,12 @@ public class Activity_inicio extends AppCompatActivity {
         dialog.show();
     }
 
+    /** Basado en el codigo extraído de las siguientes fuentes
+     * Youtube: https://www.youtube.com/watch?time_continue=34&v=W4qqTcxqq48&embeds_euri=https%3A%2F%2Fwww.google.com%2F&feature=emb_logo
+     * Geeks for Geeks: https://www.geeksforgeeks.org/how-to-create-dialog-with-custom-layout-in-android/
+     Utilizado para mostrar el dialogo y aplicarle el layout correspondiente, adaptado a que tenga el aspecto y funcionalidades de
+     la aplicacion
+     **/
     // Funcion que crea el dialogo de registrarse
     public void showDialogoRegistro() {
         // Creo el dialogo de login con el layout
@@ -247,6 +257,9 @@ public class Activity_inicio extends AppCompatActivity {
 
                     Toast.makeText(Activity_inicio.this, msg_registro, Toast.LENGTH_SHORT).show();
 
+                    // Elimino el dialogo
+                    dialog.dismiss();
+
                     // Inicio el juego
                     Intent intent = new Intent(Activity_inicio.this, Activity_jugar.class);
                     intent.putExtra("username", username);
@@ -264,21 +277,11 @@ public class Activity_inicio extends AppCompatActivity {
     ActivityResultLauncher<Intent> startActivityIntent = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
-            Locale locale = getResources().getConfiguration().getLocales().get(0);
-            idiomaAct = locale.getLanguage();
-
+            // Reinicio la actividad para aplicar posibles cambios de ajustes
             finish();
             startActivity(getIntent());
 
         }
     });
 
-
-    // Para guardar la info cuando se rote la pantalla
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        // Guardo el idioma del dispositivo
-        savedInstanceState.putString("idioma", idiomaAct);
-    }
 }

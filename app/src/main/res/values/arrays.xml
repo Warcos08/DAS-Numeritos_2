@@ -11,15 +11,15 @@
     </string-array>
 
     <string-array name="idiomas_valor">
-        <item>es</item>
-        <item>en</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
 
     <string-array name="temas_valor">
-        <item>claro</item>
-        <item>oscuro</item>
-        <item>bosque</item>
-        <item>mar</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
     </string-array>
 
 </resources>

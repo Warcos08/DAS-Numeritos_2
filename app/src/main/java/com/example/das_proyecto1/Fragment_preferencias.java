@@ -29,27 +29,9 @@ public class Fragment_preferencias extends PreferenceFragmentCompat
         // Filtro que preferencia ha cambiado
         switch(s) {
             case "temaPref":
-                System.out.println("############## TEMA ##############");
-                // Miro que tema ha sido elegido
-                switch(sharedPreferences.getString(s, null)) {
-                    case "Theme.Bosque":
-                        System.out.println("############## BOSQUE ##############");
-                        getActivity().setTheme(R.style.Theme_Bosque);
-                        break;
-                    case "Theme.Mar":
-                        System.out.println("############## MAR ##############");
-                        getActivity().setTheme(R.style.Theme_Mar);
-                        break;
-                    default:
-                        System.out.println("############## OTRO ##############");
-                        getActivity().setTheme((R.style.Theme_DAS_Proyecto1));
-                        break;
-                }
-
                 // Reinicio la actividad para aplicar el tema
                 getActivity().finish();
                 startActivity(getActivity().getIntent());
-
                 break;
 
             case "idiomaPref":
@@ -64,11 +46,16 @@ public class Fragment_preferencias extends PreferenceFragmentCompat
                 Context context = getActivity().createConfigurationContext(configuration);
                 getActivity().getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
 
+                // Vuelvo a cargar la actividad para aplicar el idioma
                 getActivity().finish();
                 startActivity(getActivity().getIntent());
 
                 break;
 
+            case "notifPref":
+                System.out.println("###################### NOTIFS");
+
+                break;
 
             default:
                 break;

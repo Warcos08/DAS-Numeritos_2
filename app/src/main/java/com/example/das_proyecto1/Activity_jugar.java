@@ -27,14 +27,64 @@ import android.widget.Toast;
 import java.util.Locale;
 
 public class Activity_jugar extends AppCompatActivity {
-
-    private static String idiomaAct = "";
     private static Juego miJuego;
     private static String username = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // Miro que tema ha sido elegido
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String tema = prefs.getString("temaPref", "1");
+        switch(tema) {
+            case "1":
+                System.out.println("##############" + tema + " ##############");
+                setTheme(R.style.tema_claro);
+                break;
+            case "2":
+                System.out.println("############## " + tema + " ##############");
+                setTheme(R.style.tema_claro);
+                break;
+            case "3":
+                System.out.println("############## " + tema + " ##############");
+                setTheme(R.style.tema_bosque);
+                break;
+            case "4":
+                System.out.println("############## " + tema + " ##############");
+                setTheme(R.style.tema_mar);
+                break;
+            default:
+                System.out.println("############## OTRO ##############");
+                setTheme(R.style.tema_claro);
+                break;
+        }
+
+        // Cargo la pagina en el idioma elegido
+        Locale nuevaloc;
+        if (prefs.getString("idiomaPref", "1").equals("2")) {
+            nuevaloc = new Locale("en");
+        } else {
+            nuevaloc = new Locale("es");
+        }
+
+        Locale.setDefault(nuevaloc);
+        Configuration configuration = getBaseContext().getResources().getConfiguration();
+        configuration.setLocale(nuevaloc);
+        configuration.setLayoutDirection(nuevaloc);
+
+        Context context = getBaseContext().createConfigurationContext(configuration);
+        getBaseContext().getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
+
         super.onCreate(savedInstanceState);
+        /** Codigo extraído de StackOverflow para esconder la ActionBar
+         Pregunta: https://stackoverflow.com/questions/36236181/how-to-remove-title-bar-from-the-android-activity
+         Autor de la respuesta: https://stackoverflow.com/users/2984712/christer
+         **/
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){}
         setContentView(R.layout.activity_jugar);
         System.out.println("###################### onCREATE ######################");
 
@@ -44,41 +94,7 @@ public class Activity_jugar extends AppCompatActivity {
         }
         System.out.println("###################### USER: " + username);
 
-
-        if (savedInstanceState != null) {
-
-            // Num
-            System.out.println("###################### NUM: " + miJuego.getNum());
-
-            // Cifra
-            System.out.println("###################### CIFRA: " + miJuego.getCifra());
-
-            // Idioma
-            idiomaAct = savedInstanceState.getString("idioma");
-            System.out.println("###################### IDIOMA: " + idiomaAct);
-
-            Locale nuevaloc;
-            if (idiomaAct.equals("en")) {
-                nuevaloc = new Locale("en");
-            } else {
-                nuevaloc = new Locale("es");
-            }
-
-            Locale.setDefault(nuevaloc);
-            Configuration configuration = getBaseContext().getResources().getConfiguration();
-            configuration.setLocale(nuevaloc);
-            configuration.setLayoutDirection(nuevaloc);
-
-            Context context = getBaseContext().createConfigurationContext(configuration);
-            getBaseContext().getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
-
-            finish();
-            startActivity(getIntent());
-
-            // Puntuacion
-            System.out.println("###################### PTOS: " + miJuego.getPuntuacion());
-        }
-
+        // Genero un nuevo juego si no lo hay ya
         if (miJuego == null) {
             miJuego = new Juego();
         }
@@ -200,6 +216,15 @@ public class Activity_jugar extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        // Para que la actividad no siga activa al salir de ella
+        super.onBackPressed();
+        Intent intent = new Intent();
+        setResult(3, intent);
+        finish();
+    }
+
 
     @Override
     protected void onStart() {
@@ -221,12 +246,8 @@ public class Activity_jugar extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-
-        idiomaAct = getResources().getConfiguration().getLocales().get(0).getLanguage();
-        savedInstanceState.putString("idioma", idiomaAct);
     }
 }
