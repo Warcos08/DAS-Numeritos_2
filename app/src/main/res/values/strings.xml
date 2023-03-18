@@ -59,7 +59,7 @@
     </string-array>
     <string name="ajustes_pref_tema">Tema de la aplicación</string>
     <string-array name="temas">
-        <item>Claro</item>
+        <item>Estándar</item>
         <item>Bosque</item>
         <item>Mar</item>
     </string-array>

@@ -55,7 +55,7 @@
     <string name="ajustes_pref_tema">App theme</string>
     <string name="ajustes_title_tema">Choose a theme:</string>
     <string-array name="temas">
-        <item>Light</item>
+        <item>Default</item>
         <item>Forest</item>
         <item>Sea</item>
     </string-array>
