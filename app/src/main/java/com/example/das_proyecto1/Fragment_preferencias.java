@@ -52,17 +52,13 @@ public class Fragment_preferencias extends PreferenceFragmentCompat
 
                 break;
 
-            case "notifPref":
-                System.out.println("###################### NOTIFS");
-
-                break;
-
             default:
                 break;
 
         }
     }
 
+    // Metodos para gestionar la vida del listener
     @Override
     public void onResume() {
         super.onResume();

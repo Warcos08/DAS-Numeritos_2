@@ -81,6 +81,7 @@ public class Activity_inicio extends AppCompatActivity {
             this.getSupportActionBar().hide();
         }
         catch (NullPointerException e){}
+
         setContentView(R.layout.activity_inicio);
 
     }

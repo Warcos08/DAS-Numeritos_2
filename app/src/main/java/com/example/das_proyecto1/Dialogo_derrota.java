@@ -14,6 +14,7 @@ public class Dialogo_derrota extends DialogFragment {
 
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
+        // Que hacer cuando el dialogo desaparece
         super.onDismiss(dialog);
         getActivity().finish();
     }
@@ -36,12 +37,15 @@ public class Dialogo_derrota extends DialogFragment {
 
         builder.setTitle(titulo);
         builder.setMessage(msg);
+        // Boton de salir de la partida
         builder.setNegativeButton(salir, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dismiss();
             }
         });
+
+        // Boton de compartir
         builder.setPositiveButton(compartir, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

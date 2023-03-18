@@ -24,17 +24,6 @@ public class Juego {
 
         System.out.println("######################### " + cifra);
 
-        // Espero un segundo
-        /*
-        try {
-            TimeUnit.SECONDS.sleep(2);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        */
-        // Borro el contenido del textView
-        //txt_num.setText("");
-
         // Actualizo num
         num = num * 10 + cifra;
 
@@ -49,7 +38,6 @@ public class Juego {
     public void sumarPunto() {
         puntuacion += 1;
     }
-
 
     // Getters
     public long getNum() {

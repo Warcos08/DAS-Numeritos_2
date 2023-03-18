@@ -10,6 +10,10 @@ import android.widget.TextView;
 
 public class CustomAdapter extends BaseAdapter {
 
+    /** Extraido de la siguiente fuente:
+     * Youtube: https://www.youtube.com/watch?v=aUFdgLSEl0g&t=1s&ab_channel=CodingPursuit
+     Modificado para acomodar la informacion a mostrar por esta aplicacion concreta
+     */
     Context context;
     int[] imagenes;
     String[] users;

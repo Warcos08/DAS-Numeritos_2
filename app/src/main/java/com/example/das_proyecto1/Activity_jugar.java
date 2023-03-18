@@ -3,6 +3,7 @@ package com.example.das_proyecto1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.preference.PreferenceManager;
 
@@ -12,6 +13,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -86,6 +88,7 @@ public class Activity_jugar extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            // Obtengo el user que esta jugando para más tarde almacenar la puntuacion
             username = extras.getString("username");
         }
         System.out.println("###################### USER: " + username);
@@ -123,10 +126,11 @@ public class Activity_jugar extends AppCompatActivity {
 
                     bd.insert("Puntuaciones", null, datos);
 
-                    // Compruebo que se tenga permiso para mandar notificaciones
+                    // Compruebo que se tenga permiso para mandar notificaciones y se haya activado en ajustes
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-                    if (prefs.getBoolean("notifPref", false)) {
+                    if (prefs.getBoolean("notifPref", false) &&
+                            ContextCompat.checkSelfPermission(Activity_jugar.this, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
                         // Notificaciones si ha alcanzado el ranking
                         Cursor c = bd.rawQuery("SELECT Puntuacion FROM Puntuaciones " +
                                 "WHERE Puntuacion > " + "'" + miJuego.getPuntuacion() + "'",null);
