@@ -1,42 +1,44 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.DAS_Proyecto1" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="tema_claro" parent="Theme.MaterialComponents.DayNight">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
-    </style>
-
-    <style name="Theme.Bosque" parent="Theme.AppCompat.Light">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">#276a20</item>
+        <item name="colorPrimary">#FFBB86FC</item>
         <item name="colorOnPrimary">#000000</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#66b959</item>
+        <item name="colorSecondary">#FF03DAC5</item>
         <item name="colorOnSecondary">#000000</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">#276a20</item>
+        <item name="android:statusBarColor">#FFBB86FC</item>
         <!-- Color de fondo -->
-        <item name="android:background">#66b959</item>
+        <item name="android:colorBackground">#A49EA6</item>
     </style>
 
-    <style name="Theme.Mar" parent="Theme.AppCompat.Light">
+    <style name="tema_bosque" parent="Theme.AppCompat.Light">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#2da0cb</item>
+        <item name="colorPrimary">#276A20</item>
         <item name="colorOnPrimary">#000000</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#b2ffff</item>
+        <item name="colorSecondary">#82cd88</item>
         <item name="colorOnSecondary">#000000</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">#2da0cb</item>
+        <item name="android:statusBarColor">#276A20</item>
         <!-- Color de fondo -->
-        <item name="android:background">#b2ffff</item>
+        <item name="android:colorBackground">#82cd88</item>
+        <item name="colorOnBackground">#000000</item>
     </style>
+
+    <style name="tema_mar" parent="Theme.AppCompat.Light">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">#0981D1</item>
+        <item name="colorOnPrimary">#000000</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#3FB8D9</item>
+        <item name="colorOnSecondary">#000000</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">#0981D1</item>
+        <!-- Color de fondo -->
+        <item name="android:colorBackground">#B2FFFF</item>
+        <item name="colorOnBackground">#000000</item>
+    </style>
+
 </resources>

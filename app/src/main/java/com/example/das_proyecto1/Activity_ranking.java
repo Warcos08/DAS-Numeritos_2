@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.widget.ListView;
 
@@ -29,23 +31,23 @@ public class Activity_ranking extends AppCompatActivity {
         String tema = prefs.getString("temaPref", "1");
         switch(tema) {
             case "1":
-                System.out.println("##############" + tema + " ##############");
+                System.out.println("############## " + tema + " ##############");
+                // Cambiar el color de la ActionBar (para el modo nocturno)
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFBB86FC")));
                 setTheme(R.style.tema_claro);
                 break;
             case "2":
                 System.out.println("############## " + tema + " ##############");
-                setTheme(R.style.tema_claro);
-                break;
-            case "3":
-                System.out.println("############## " + tema + " ##############");
                 setTheme(R.style.tema_bosque);
                 break;
-            case "4":
+            case "3":
                 System.out.println("############## " + tema + " ##############");
                 setTheme(R.style.tema_mar);
                 break;
             default:
                 System.out.println("############## OTRO ##############");
+                // Cambiar el color de la ActionBar (para el modo nocturno)
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFBB86FC")));
                 setTheme(R.style.tema_claro);
                 break;
         }

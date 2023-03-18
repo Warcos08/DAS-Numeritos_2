@@ -56,7 +56,6 @@
     <string name="ajustes_title_tema">Choose a theme:</string>
     <string-array name="temas">
         <item>Light</item>
-        <item>Dark</item>
         <item>Forest</item>
         <item>Sea</item>
     </string-array>

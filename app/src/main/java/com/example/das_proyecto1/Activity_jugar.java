@@ -43,13 +43,9 @@ public class Activity_jugar extends AppCompatActivity {
                 break;
             case "2":
                 System.out.println("############## " + tema + " ##############");
-                setTheme(R.style.tema_claro);
-                break;
-            case "3":
-                System.out.println("############## " + tema + " ##############");
                 setTheme(R.style.tema_bosque);
                 break;
-            case "4":
+            case "3":
                 System.out.println("############## " + tema + " ##############");
                 setTheme(R.style.tema_mar);
                 break;
@@ -126,7 +122,6 @@ public class Activity_jugar extends AppCompatActivity {
                     datos.put("Puntuacion", miJuego.getPuntuacion());
 
                     bd.insert("Puntuaciones", null, datos);
-
 
                     // Compruebo que se tenga permiso para mandar notificaciones
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

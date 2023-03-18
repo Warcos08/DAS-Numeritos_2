@@ -42,13 +42,9 @@ public class Activity_inicio extends AppCompatActivity {
                 break;
             case "2":
                 System.out.println("############## " + tema + " ##############");
-                setTheme(R.style.tema_claro);
-                break;
-            case "3":
-                System.out.println("############## " + tema + " ##############");
                 setTheme(R.style.tema_bosque);
                 break;
-            case "4":
+            case "3":
                 System.out.println("############## " + tema + " ##############");
                 setTheme(R.style.tema_mar);
                 break;

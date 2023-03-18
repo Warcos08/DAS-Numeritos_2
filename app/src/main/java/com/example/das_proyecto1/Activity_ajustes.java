@@ -1,25 +1,23 @@
 package com.example.das_proyecto1;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.os.Build;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 import java.util.Locale;
 
@@ -31,25 +29,26 @@ public class Activity_ajustes extends AppCompatActivity {
         // Miro que tema ha sido elegido
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String tema = prefs.getString("temaPref", "1");
+
         switch(tema) {
             case "1":
                 System.out.println("############## " + tema + " ##############");
+                // Cambiar el color de la ActionBar (para el modo nocturno)
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFBB86FC")));
                 setTheme(R.style.tema_claro);
                 break;
             case "2":
                 System.out.println("############## " + tema + " ##############");
-                setTheme(R.style.tema_claro);
-                break;
-            case "3":
-                System.out.println("############## " + tema + " ##############");
                 setTheme(R.style.tema_bosque);
                 break;
-            case "4":
+            case "3":
                 System.out.println("############## " + tema + " ##############");
                 setTheme(R.style.tema_mar);
                 break;
             default:
                 System.out.println("############## OTRO ##############");
+                // Cambiar el color de la ActionBar (para el modo nocturno)
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFBB86FC")));
                 setTheme(R.style.tema_claro);
                 break;
         }
@@ -73,13 +72,13 @@ public class Activity_ajustes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ajustes);
 
+        // Poner un texto personalizado en la ActionBar
+        getSupportActionBar().setTitle(getString(R.string.ajustes_text_ajustes));
+
         // Si no se tienen permisos para notificaciones, se piden
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 11);
         }
-
-        // Poner un texto personalizado en la ActionBar
-        getSupportActionBar().setTitle(getString(R.string.ajustes_text_ajustes));
 
     }
 
