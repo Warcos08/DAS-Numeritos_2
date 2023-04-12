@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-feature android:name="android.hardware.camera2.full" android:required="true"/>
 
     <application
         android:allowBackup="true"
@@ -13,6 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/tema_claro"
         tools:targetApi="31">
+        <activity
+            android:name=".Activity_perfil"
+            android:exported="false" />
+        <activity
+            android:name=".Activity_centro"
+            android:exported="false" />
         <activity
             android:name=".Activity_ranking"
             android:exported="false" />
@@ -32,4 +43,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

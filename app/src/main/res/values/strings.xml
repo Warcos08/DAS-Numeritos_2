@@ -1,11 +1,10 @@
 <resources>
     <string name="app_name" translatable="false">Numeritos</string>
-    <string name="inicio_logo">NUMERITOS</string>
-    <string name="inicio_btn_jugar">Jugar</string>
-    <string name="inicio_btn_ranking">Tabla de puntuaciones</string>
-    <string name="inicio_btn_ajustes">Ajustes</string>
-    <string name="inicio_btn_salir">Salir del juego</string>
-    <string name="inicio_btn_instrucciones">Cómo jugar</string>
+    <string name="inicio_logo" translatable="false">NUMERITOS</string>
+    <string name="inicio_btn_acceso">Acceder</string>
+    <string name="centro_btn_ranking">Tabla de puntuaciones</string>
+    <string name="centro_btn_ajustes">Ajustes</string>
+    <string name="centro_btn_salir">Salir del juego</string>
     <string name="ajustes_pref_idioma">Idioma de la applicación</string>
     <string name="ajustes_text_ajustes">Ajustes</string>
     <string name="ajustes_text_usuario">Usuario:</string>
@@ -65,4 +64,6 @@
     </string-array>
     <string name="ajustes_title_tema">Escoge un tema:</string>
     <string name="ajustes_pref_notifs">Activar notificaciones</string>
+    <string name="centro_btn_jugar">Jugar</string>
+    <string name="centro_btn_perfil">Perfil</string>
 </resources>

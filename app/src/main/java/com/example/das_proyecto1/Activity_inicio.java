@@ -88,10 +88,11 @@ public class Activity_inicio extends AppCompatActivity {
 
     // Metodos onClick
 
-    public void onClickJugar(View v) {
+    public void onClickAcceso(View v) {
         showDialogoLogin();
     }
 
+    /**
     public void onClickRanking(View v) {
         Intent intent = new Intent(Activity_inicio.this, Activity_ranking.class);
         startActivityIntent.launch(intent);
@@ -106,7 +107,7 @@ public class Activity_inicio extends AppCompatActivity {
         DialogFragment dialogo_salir = new Dialogo_salir();
         dialogo_salir.show(getSupportFragmentManager(), "dialogo_salir");
     }
-
+    **/
 
     // Funcion que crea el dialogo de login
     /** Basado en el codigo extraído de las siguientes fuentes
@@ -159,9 +160,11 @@ public class Activity_inicio extends AppCompatActivity {
                         System.out.println("############### " + user);
                         // Paso a la actividad jugar y cierro el dialogo
                         dialog.dismiss();
-                        Intent intent = new Intent(Activity_inicio.this, Activity_jugar.class);
+                        Intent intent = new Intent(Activity_inicio.this, Activity_centro.class);
                         intent.putExtra("username", username);
                         startActivityIntent.launch(intent);
+                        // Termino la actividad
+                        finish();
 
                     } else {
                         Toast.makeText(Activity_inicio.this, msg2, Toast.LENGTH_SHORT).show();
@@ -257,10 +260,13 @@ public class Activity_inicio extends AppCompatActivity {
                     // Elimino el dialogo
                     dialog.dismiss();
 
-                    // Inicio el juego
-                    Intent intent = new Intent(Activity_inicio.this, Activity_jugar.class);
+                    // Avanzo a la siguiente actividad
+                    Intent intent = new Intent(Activity_inicio.this, Activity_centro.class);
                     intent.putExtra("username", username);
                     startActivityIntent.launch(intent);
+
+                    // Termino la actividad
+                    finish();
 
                 }
 

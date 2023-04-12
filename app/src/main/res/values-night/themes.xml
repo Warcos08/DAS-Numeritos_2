@@ -10,7 +10,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">#FFBB86FC</item>
         <!-- Color de fondo -->
-        <item name="android:colorBackground">#A49EA6</item>
+        <item name="android:windowBackground">#A49EA6</item>
     </style>
 
     <style name="tema_bosque" parent="Theme.AppCompat.Light">
@@ -23,7 +23,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">#276A20</item>
         <!-- Color de fondo -->
-        <item name="android:colorBackground">#82cd88</item>
+        <item name="android:windowBackground">#82cd88</item>
         <item name="colorOnBackground">#000000</item>
     </style>
 
@@ -37,7 +37,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">#0981D1</item>
         <!-- Color de fondo -->
-        <item name="android:colorBackground">#B2FFFF</item>
+        <item name="android:windowBackground">#B2FFFF</item>
         <item name="colorOnBackground">#000000</item>
     </style>
 

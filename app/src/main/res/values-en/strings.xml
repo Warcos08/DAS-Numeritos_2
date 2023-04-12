@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="inicio_logo">NUMBERS</string>
-    <string name="inicio_btn_jugar">Play</string>
-    <string name="inicio_btn_ranking">Higshcore ranking</string>
-    <string name="inicio_btn_ajustes">Settings</string>
-    <string name="inicio_btn_salir">Quit game</string>
-    <string name="inicio_btn_instrucciones">How to play</string>
+    <string name="inicio_btn_acceso">Access</string>
+    <string name="centro_btn_ranking">Higshcore ranking</string>
+    <string name="centro_btn_ajustes">Settings</string>
+    <string name="centro_btn_salir">Quit game</string>
     <string name="ajustes_pref_idioma">App language</string>
     <string name="ajustes_text_ajustes">Settings</string>
     <string name="ajustes_text_usuario">Username:</string>
@@ -48,6 +46,7 @@
     <string name="derrota_msg_compartir">"I played Numeritos and got a score of "</string>
     <string name="derrota_msg_via">Share via:</string>
     <string name="ajustes_title_idioma">Choose a language:</string>
+    <string name="ajustes_pref_notifs">Turn on notifications</string>
     <string-array name="idiomas">
         <item>Español</item>
         <item>English</item>
@@ -59,5 +58,7 @@
         <item>Forest</item>
         <item>Sea</item>
     </string-array>
-    <string name="ajustes_pref_notifs">Turn on notifications</string>
+    <string name="centro_btn_jugar">Play</string>
+    <string name="centro_btn_perfil">Profile</string>
+
 </resources>
