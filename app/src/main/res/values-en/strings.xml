@@ -62,5 +62,6 @@
     <string name="centro_btn_perfil">Profile</string>
     <string name="perfil_btn_guardar">Save changes and quit</string>
     <string name="perfil_text_username">Username:</string>
+    <string name="centro_btn_mapa">Map</string>
 
 </resources>

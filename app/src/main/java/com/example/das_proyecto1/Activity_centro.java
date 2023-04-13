@@ -6,6 +6,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
@@ -14,13 +16,21 @@ import androidx.preference.PreferenceManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Locale;
@@ -101,6 +111,48 @@ public class Activity_centro extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Activity_centro.this, Activity_ranking.class);
                 startActivityIntent.launch(intent);
+            }
+        });
+
+        // Funcion del boton de mapa
+        Button btn_mapa = (Button) findViewById(R.id.btn_mapa);
+        btn_mapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Si no se tienen permisos para acceder a la ubicacion, se piden
+                if (ContextCompat.checkSelfPermission(Activity_centro.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(Activity_centro.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 20);
+                }
+
+                if (ContextCompat.checkSelfPermission(Activity_centro.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                    System.out.println("###### HA ENTRADO EN LO DE LA LOCALIZACION ######");
+
+                    FusedLocationProviderClient provider = LocationServices.getFusedLocationProviderClient(Activity_centro.this);
+                    provider.getLastLocation().addOnSuccessListener(Activity_centro.this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                // URI con las coordenadas del punto del mapa que quiero abrir
+                                Uri gmmIntentUri = Uri.parse("google.streetview:cbll=" + Double.toString(location.getLatitude()) + ", " + Double.toString(location.getLongitude()));
+                                // Intent para abrir el mapa
+                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                mapIntent.setPackage("com.google.android.apps.maps");
+                                startActivity(mapIntent);
+                                finish();
+
+                            } else {
+                                System.out.println("No se ha podido encontrar la localizacion actual");
+                            }
+                        }
+                    }).addOnFailureListener(Activity_centro.this, new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            System.out.println("FAILURE");
+                        }
+                    });
+
+                }
             }
         });
 

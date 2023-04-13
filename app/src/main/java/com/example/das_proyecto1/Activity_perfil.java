@@ -10,6 +10,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -122,13 +123,31 @@ public class Activity_perfil extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                int i = 0;
                 // Si no se tienen permisos para usar la camara, se piden
                 if (ContextCompat.checkSelfPermission(Activity_perfil.this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(Activity_perfil.this, new String[]{android.Manifest.permission.CAMERA}, 20);
                 } else {
+                    i += 1;
+                }
+
+                if (ContextCompat.checkSelfPermission(Activity_perfil.this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(Activity_perfil.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 20);
+                } else {
+                    i += 1;
+                }
+
+                if (ContextCompat.checkSelfPermission(Activity_perfil.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(Activity_perfil.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 20);
+                } else {
+                    i += 1;
+                }
+
+                if (i == 3) {
                     Intent elIntentFoto= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     takePictureLauncher.launch(elIntentFoto);
                 }
+
 
                 /**
                 if (ContextCompat.checkSelfPermission(Activity_perfil.this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -148,9 +167,27 @@ public class Activity_perfil extends AppCompatActivity {
         btn_galeria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pickMedia.launch(new PickVisualMediaRequest.Builder()
-                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
-                        .build());
+
+                int i = 0;
+                // Si no se tienen permisos para acceder a la galeria se piden
+                if (ContextCompat.checkSelfPermission(Activity_perfil.this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(Activity_perfil.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 20);
+                } else {
+                    i += 1;
+                }
+
+                if (ContextCompat.checkSelfPermission(Activity_perfil.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(Activity_perfil.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 20);
+                } else {
+                    i += 1;
+                }
+
+                if (i == 2) {
+                    pickMedia.launch(new PickVisualMediaRequest.Builder()
+                            .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                            .build());
+                }
+
             }
         });
 
@@ -181,15 +218,16 @@ public class Activity_perfil extends AppCompatActivity {
                     }
 
                     // Si el nombre es valido, lo actualizo junto a la foto
-                    bd.execSQL("UPDATE Usuarios " +
-                            "SET Foto = '" + img_bytes + "', Username = '" + nuevo_user + "' " +
-                            "WHERE Username = '" + username + "'");
+                    ContentValues cv = new ContentValues();
+                    cv.put("Username", nuevo_user);
+                    cv.put("Foto", img_bytes);
+                    bd.update("Usuarios", cv, "Username='" + username + "'", null);
 
                 } else {
                     // Si solo se ha cambiado la foto, la actualizo
-                    bd.execSQL("UPDATE Usuarios " +
-                            "SET Foto = '" + img_bytes + "' " +
-                            "WHERE Username = '" + username + "'");
+                    ContentValues cv = new ContentValues();
+                    cv.put("Foto", img_bytes);
+                    bd.update("Usuarios", cv, "Username='" + username + "'", null);
                 }
 
                 Intent intent = new Intent();
@@ -208,6 +246,7 @@ public class Activity_perfil extends AppCompatActivity {
                 ImageView img_perfil = findViewById(R.id.img_perfil);
                 Bitmap miniatura = (Bitmap) bundle.get("data");
                 img_bytes = Utility.getBitmapAsByteArray(miniatura);
+                System.out.println(img_bytes);
                 img_perfil.setImageBitmap(miniatura);
             } else {
                 Log.d("TakenPicture", "No photo taken");
@@ -225,6 +264,7 @@ public class Activity_perfil extends AppCompatActivity {
                     throw new RuntimeException(e);
                 }
                 img_bytes = Utility.getBitmapAsByteArray(bmap);
+                System.out.println(img_bytes);
                 ImageView marco = findViewById(R.id.img_perfil);
                 marco.setImageURI(uri);
             } else {

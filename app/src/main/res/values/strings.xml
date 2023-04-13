@@ -79,4 +79,5 @@
     <string name="centro_btn_perfil">Perfil</string>
     <string name="perfil_btn_guardar">Guardar cambios y salir</string>
     <string name="perfil_text_username">Nombre de usuario:</string>
+    <string name="centro_btn_mapa">Mapa</string>
 </resources>
