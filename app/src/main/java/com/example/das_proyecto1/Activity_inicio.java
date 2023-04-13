@@ -17,6 +17,8 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -226,6 +228,9 @@ public class Activity_inicio extends AppCompatActivity {
                 String pwd = txt_pwd.getText().toString();
                 TextView txt_pwd2 = (TextView) dialog.findViewById(R.id.register_password2);
                 String pwd2 = txt_pwd2.getText().toString();
+                // Se carga la imagen por defecto
+                Bitmap bmap = BitmapFactory.decodeResource(getResources(), R.drawable.perfil);
+                byte[] img_perfil = Utility.getBitmapAsByteArray(bmap);
 
                 // Obtengo la BD
                 BD gestorBD = new BD(Activity_inicio.this, "miBD", null, 1);
@@ -252,6 +257,7 @@ public class Activity_inicio extends AppCompatActivity {
                     datos.put("Nombre", nombre);
                     datos.put("Apellidos", apellidos);
                     datos.put("Password", pwd);
+                    datos.put("Foto", img_perfil);
 
                     bd.insert("Usuarios", null, datos);
 

@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -75,7 +76,7 @@ public class Activity_centro extends AppCompatActivity {
 
         // Guardo el nombre del usuario logueado
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
+        if (extras != null && username.equals("")) {
             // Obtengo el user que esta jugando para más tarde almacenar la puntuacion
             username = extras.getString("username");
         }
@@ -124,6 +125,7 @@ public class Activity_centro extends AppCompatActivity {
                     case R.id.btn_salir:
                         DialogFragment dialogo_salir = new Dialogo_salir();
                         dialogo_salir.show(getSupportFragmentManager(), "dialogo_salir");
+                        context.deleteDatabase("miBD");
                         break;
 
                     default:
@@ -154,7 +156,12 @@ public class Activity_centro extends AppCompatActivity {
         @Override
         public void onActivityResult(ActivityResult result) {
             // Reinicio la actividad para aplicar posibles cambios de ajustes
-            System.out.println("######## REINICIO #########");
+            System.out.println("######### REINICIO #########");
+            System.out.println("######### " + Integer.toString(result.getResultCode()) + " #########");
+            if (result.getResultCode() == 33) {
+                username = result.getData().getStringExtra("username");
+                Toast.makeText(Activity_centro.this, username, Toast.LENGTH_SHORT).show();
+            }
             finish();
             startActivity(getIntent());
         }

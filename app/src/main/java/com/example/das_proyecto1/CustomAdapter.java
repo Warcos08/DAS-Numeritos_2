@@ -1,6 +1,7 @@
 package com.example.das_proyecto1;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +16,14 @@ public class CustomAdapter extends BaseAdapter {
      Modificado para acomodar la informacion a mostrar por esta aplicacion concreta
      */
     Context context;
-    int[] imagenes;
+    int[] imgs_ranking;
     String[] users;
     int[] puntos;
     LayoutInflater inflater;
 
-    public CustomAdapter(Context context, int[] imgs, String[] usuarios, int[] ptos) {
+    public CustomAdapter(Context context, int[] imgs_ranking, String[] usuarios, int[] ptos) {
         this.context = context;
-        this.imagenes = imgs;
+        this.imgs_ranking = imgs_ranking;
         this.users = usuarios;
         this.puntos = ptos;
         this.inflater = LayoutInflater.from(context);
@@ -48,11 +49,12 @@ public class CustomAdapter extends BaseAdapter {
         // Cojo el layout de la lista
         view = inflater.inflate(R.layout.activity_custom_list, null);
         ImageView trofeo = (ImageView) view.findViewById(R.id.ranking_img);
+        ImageView perfil = (ImageView) view.findViewById(R.id.img_perfil);
         TextView usuario = (TextView) view.findViewById(R.id.ranking_user);
         TextView puntuacion = (TextView) view.findViewById(R.id.ranking_ptos);
 
         // Asigno el valor que corresponde segun en la posicion i de la lista
-        trofeo.setImageResource(imagenes[i]);
+        trofeo.setImageResource(imgs_ranking[i]);
         usuario.setText(users[i]);
         puntuacion.setText(Integer.toString(puntos[i]));
 

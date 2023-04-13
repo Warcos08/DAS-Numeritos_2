@@ -19,7 +19,7 @@ import java.util.Locale;
 public class Activity_ranking extends AppCompatActivity {
 
     // Aquello que vamos a mostrar en el ListView
-    int[] imagenes = {R.drawable.gold_trans, R.drawable.silver_trans, R.drawable.bronze_trans, R.drawable.blank_trans, R.drawable.blank_trans, R.drawable.blank_trans, R.drawable.blank_trans, R.drawable.blank_trans, R.drawable.blank_trans, R.drawable.blank_trans};
+    int[] imgs_rank = {R.drawable.gold_trans, R.drawable.silver_trans, R.drawable.bronze_trans, R.drawable.blank_trans, R.drawable.blank_trans, R.drawable.blank_trans, R.drawable.blank_trans, R.drawable.blank_trans, R.drawable.blank_trans, R.drawable.blank_trans};
     String[] users = new String[10];
     int[] ptos = new int[10];
     ListView listView;  // El ListView
@@ -102,7 +102,7 @@ public class Activity_ranking extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.ranking_list);
         listView.setEnabled(false);
         // Le paso al adapter lo que necesita
-        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), imagenes, users, ptos);
+        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), imgs_rank, users, ptos);
         listView.setAdapter(customAdapter);
     }
 

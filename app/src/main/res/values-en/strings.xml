@@ -60,5 +60,7 @@
     </string-array>
     <string name="centro_btn_jugar">Play</string>
     <string name="centro_btn_perfil">Profile</string>
+    <string name="perfil_btn_guardar">Save changes and quit</string>
+    <string name="perfil_text_username">Username:</string>
 
 </resources>

@@ -20,7 +20,8 @@ public class BD extends SQLiteOpenHelper {
                 "'Username' VARCHAR(255) PRIMARY KEY NOT NULL, " +
                 "'Nombre' VARCHAR(255), " +
                 "'Apellidos' VARCHAR(255), " +
-                "'Password' VARCHAR(255)" +
+                "'Password' VARCHAR(255)," +
+                "'Foto' BLOB" +
                 ")");
 
         // Creacion de la tabla que guarda las puntuaciones
