@@ -1,6 +1,9 @@
 package com.example.das_proyecto1;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -12,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class Fragment_preferencias extends PreferenceFragmentCompat
                                     implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -49,6 +53,35 @@ public class Fragment_preferencias extends PreferenceFragmentCompat
                 // Vuelvo a cargar la actividad para aplicar el idioma
                 getActivity().finish();
                 startActivity(getActivity().getIntent());
+                break;
+
+            case "notifPref":
+                if (sharedPreferences.getBoolean("notifPref", false)) {
+                    System.out.println("NOTIFICACIONES ACTIVADAS");
+
+                    // Al activar las notificaciones diarias, configuro el AlarmManager de la notificacion diaria
+                    // Creo el Intent al BroadcastReceiver, el pendingIntent y el AlarmManager
+                    Intent intent = new Intent(getContext(), NotifBroadcast.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),0, intent, PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+
+                    // Obtengo el momento en el que se activa la funcion y el tiempo del intervalo
+                    long tInicio = System.currentTimeMillis();
+                    long tIntervalo = TimeUnit.DAYS.toMillis(1);
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, tInicio, tIntervalo, pendingIntent);
+
+                } else {
+                    System.out.println("NOTIFICACIONES DESACTIVADAS");
+
+                    // En caso de que se desactiven, cancelo la notificacion diaria
+                    // Creo el AlarmManager exactamente igual y lo cancelo
+                    Intent intent = new Intent(getContext(), NotifBroadcast.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),0, intent, PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+
+                    alarmManager.cancel(pendingIntent);
+
+                }
 
                 break;
 

@@ -28,7 +28,9 @@ public class BD extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE Puntuaciones (" +
                 "'Id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "'Username' VARCHAR(255), " +
-                "'Puntuacion' INTEGER" +
+                "'Puntuacion' INTEGER," +
+                "'Latitud' DOUBLE," +
+                "'Longitud' DOUBLE" +
                 ")");
     }
 

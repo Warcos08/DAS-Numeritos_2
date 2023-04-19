@@ -18,6 +18,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -125,32 +127,10 @@ public class Activity_centro extends AppCompatActivity {
                 }
 
                 if (ContextCompat.checkSelfPermission(Activity_centro.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-                    System.out.println("###### HA ENTRADO EN LO DE LA LOCALIZACION ######");
-
-                    FusedLocationProviderClient provider = LocationServices.getFusedLocationProviderClient(Activity_centro.this);
-                    provider.getLastLocation().addOnSuccessListener(Activity_centro.this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            if (location != null) {
-                                // URI con las coordenadas del punto del mapa que quiero abrir
-                                Uri gmmIntentUri = Uri.parse("google.streetview:cbll=" + Double.toString(location.getLatitude()) + ", " + Double.toString(location.getLongitude()));
-                                // Intent para abrir el mapa
-                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                mapIntent.setPackage("com.google.android.apps.maps");
-                                startActivity(mapIntent);
-                                finish();
-
-                            } else {
-                                System.out.println("No se ha podido encontrar la localizacion actual");
-                            }
-                        }
-                    }).addOnFailureListener(Activity_centro.this, new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            System.out.println("FAILURE");
-                        }
-                    });
+                    Intent intent = new Intent(Activity_centro.this, Activity_mapa.class);
+                    intent.putExtra("username", username);
+                    startActivityIntent.launch(intent);
+                    finish();
 
                 }
             }

@@ -63,5 +63,6 @@
     <string name="perfil_btn_guardar">Save changes and quit</string>
     <string name="perfil_text_username">Username:</string>
     <string name="centro_btn_mapa">Map</string>
+    <string name="notif_diaria">Have you tried beating a record today?</string>
 
 </resources>

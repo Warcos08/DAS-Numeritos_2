@@ -80,4 +80,6 @@
     <string name="perfil_btn_guardar">Guardar cambios y salir</string>
     <string name="perfil_text_username">Nombre de usuario:</string>
     <string name="centro_btn_mapa">Mapa</string>
+    <string name="notif_diaria">¿Has probado a batir un record hoy?</string>
+    <string name="title_activity_mapa">Activity_mapa</string>
 </resources>

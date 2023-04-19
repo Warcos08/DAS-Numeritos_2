@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.preference.PreferenceManager;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ContentValues;
@@ -18,19 +19,28 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+
 import java.util.Locale;
 
 public class Activity_jugar extends AppCompatActivity {
     private static Juego miJuego;
     private static String username = "";
+    private static double latitud = -999;
+    private static double longitud = -999;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,21 +129,64 @@ public class Activity_jugar extends AppCompatActivity {
                     // Guardar la puntuacion en la BD
                     BD gestorBD = new BD(Activity_jugar.this, "miBD", null, 1);
                     SQLiteDatabase bd = gestorBD.getReadableDatabase();
-
                     ContentValues datos = new ContentValues();
                     datos.put("Username", username);
                     datos.put("Puntuacion", miJuego.getPuntuacion());
 
-                    bd.insert("Puntuaciones", null, datos);
+                    // Obtengo las coordenadas en las que se ha jugado la partida
+                    FusedLocationProviderClient provider = null;
+                    if (ContextCompat.checkSelfPermission(Activity_jugar.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                            ContextCompat.checkSelfPermission(Activity_jugar.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        provider = LocationServices.getFusedLocationProviderClient(Activity_jugar.this);
+                        provider.getLastLocation().addOnSuccessListener(Activity_jugar.this, new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                if (location != null) {
+                                    latitud = location.getLatitude();
+                                    longitud = location.getLongitude();
+                                } else {
+                                    System.out.println("***** La location es null");
+                                }
+                                datos.put("Latitud", latitud);
+                                datos.put("Longitud", longitud);
+
+                                bd.insert("Puntuaciones", null, datos);
+
+                            }
+                        }).addOnFailureListener(Activity_jugar.this, new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                datos.put("Latitud", -999);
+                                datos.put("Longitud", -999);
+                                bd.insert("Puntuaciones", null, datos);
+                            }
+                        });
+
+                    } else {
+                        datos.put("Latitud", -999);
+                        datos.put("Longitud", -999);
+
+                        bd.insert("Puntuaciones", null, datos);
+                    }
+
+                    if (provider == null) {
+                        System.out.println("***** El provider es null");
+                    } else {
+                        System.out.println("***** El provider NO es null");
+
+                    }
 
                     // Compruebo que se tenga permiso para mandar notificaciones y se haya activado en ajustes
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
                     if (prefs.getBoolean("notifPref", false) &&
                             ContextCompat.checkSelfPermission(Activity_jugar.this, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+
                         // Notificaciones si ha alcanzado el ranking
+
+                        // Consulta para saber si se ha entrado en el ranking
                         Cursor c = bd.rawQuery("SELECT Puntuacion FROM Puntuaciones " +
-                                "WHERE Puntuacion > " + "'" + miJuego.getPuntuacion() + "'",null);
+                                "WHERE Puntuacion > " + "'" + miJuego.getPuntuacion() + "'", null);
 
                         NotificationManager notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                         NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(Activity_jugar.this, "notifCanal");
