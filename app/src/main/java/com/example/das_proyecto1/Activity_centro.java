@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -24,6 +25,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +42,7 @@ import java.util.Locale;
 public class Activity_centro extends AppCompatActivity {
 
     private static String username = "";
+    public ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +119,7 @@ public class Activity_centro extends AppCompatActivity {
             }
         });
 
+
         // Funcion del boton de mapa
         Button btn_mapa = (Button) findViewById(R.id.btn_mapa);
         btn_mapa.setOnClickListener(new View.OnClickListener() {
@@ -136,8 +140,22 @@ public class Activity_centro extends AppCompatActivity {
             }
         });
 
+
         // Funciones del menu desplegable
+
+        // drawer layout instance to toggle the menu icon to open
+        // drawer and back button to close drawer
         DrawerLayout menuDesplegable = findViewById(R.id.drawer_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, menuDesplegable, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
+        // pass the Open and Close toggle for the drawer layout listener to toggle the button
+        menuDesplegable.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        // DrawerLayout menuDesplegable = findViewById(R.id.drawer_layout);
         NavigationView nav = findViewById(R.id.nav_view);
         nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -167,9 +185,6 @@ public class Activity_centro extends AppCompatActivity {
                 return false;
             }
         });
-
-        getSupportActionBar().setHomeAsUpIndicator(android.R.drawable.ic_dialog_alert);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -198,4 +213,13 @@ public class Activity_centro extends AppCompatActivity {
             startActivity(getIntent());
         }
     });
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
