@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "767303883354",
+    "project_id": "numeritos2-384114",
+    "storage_bucket": "numeritos2-384114.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:767303883354:android:18e2ef4e3b8bede54ed663",
+        "android_client_info": {
+          "package_name": "com.example.das_proyecto1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "767303883354-a90glf63r27r2vm9plomkehb4484rck9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgX967hYjxerqUhhm9lrGu_62u06JRMFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "767303883354-a90glf63r27r2vm9plomkehb4484rck9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
