@@ -7,7 +7,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Observer;
 import androidx.preference.PreferenceManager;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -19,16 +24,26 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.io.ByteArrayOutputStream;
+import java.util.Base64;
 import java.util.Locale;
 
 public class Activity_inicio extends AppCompatActivity {
+
+    static String img_perfil;
 
     // Metodos del ciclo de vida de la actividad
     @Override
@@ -86,6 +101,21 @@ public class Activity_inicio extends AppCompatActivity {
 
         setContentView(R.layout.activity_inicio);
 
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    System.out.println("AQUI HA PASAO ALGO QUE NO DEBERIA");
+                    return;
+                }
+
+                // Get new FCM registration token
+                String token = task.getResult();
+
+                System.out.println("#### TOKEN: " + token + "####");
+            }
+        });
+
     }
 
     // Metodos onClick
@@ -93,23 +123,6 @@ public class Activity_inicio extends AppCompatActivity {
     public void onClickAcceso(View v) {
         showDialogoLogin();
     }
-
-    /**
-    public void onClickRanking(View v) {
-        Intent intent = new Intent(Activity_inicio.this, Activity_ranking.class);
-        startActivityIntent.launch(intent);
-    }
-
-    public void onClickAjustes(View v) {
-        Intent intent = new Intent(Activity_inicio.this, Activity_ajustes.class);
-        startActivityIntent.launch(intent);
-    }
-
-    public void onClickSalir(View v) {
-        DialogFragment dialogo_salir = new Dialogo_salir();
-        dialogo_salir.show(getSupportFragmentManager(), "dialogo_salir");
-    }
-    **/
 
     // Funcion que crea el dialogo de login
     /** Basado en el codigo extraído de las siguientes fuentes
@@ -145,37 +158,46 @@ public class Activity_inicio extends AppCompatActivity {
                     Toast.makeText(Activity_inicio.this, msg1, Toast.LENGTH_SHORT).show();
 
                 } else {
-                    // Obtengo la BD
-                    BD gestorBD = new BD(Activity_inicio.this, "miBD", null, 1);
-                    SQLiteDatabase bd = gestorBD.getWritableDatabase();
+                    // Datos a enviar a la BD
+                    Data datos = new Data.Builder()
+                            .putString("peticion", "login")
+                            .putString("usuario", user)
+                            .putString("contraseña", password)
+                            .build();
 
-                    // Compruebo que el usuario se encuentre en la BD
-                    Cursor c = bd.rawQuery("SELECT * FROM Usuarios " +
-                            "WHERE Username = '" + user + "' " + "AND Password = '" + password + "'", null);
+                    // Crear la peticion a la BD
+                    OneTimeWorkRequest login = new OneTimeWorkRequest.Builder(ConexionBD.class)
+                            .setInputData(datos)
+                            .build();
+                    // Observer que comprueba que la peticion se realice
+                    WorkManager.getInstance(Activity_inicio.this).getWorkInfoByIdLiveData(login.getId()).observe(Activity_inicio.this, new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(WorkInfo workInfo) {
+                            // Aqui se gestiona la respuesta de la peticion
+                            if (workInfo != null && workInfo.getState().isFinished()) {
+                                Data output = workInfo.getOutputData();
+                                if (!output.getString("resultado").equals("Login incorrecto")) {
+                                    Toast.makeText(Activity_inicio.this, msg3, Toast.LENGTH_SHORT).show();
 
-                    // Si hay next es que existe ese usuario con esa contraseña
-                    if (c.moveToNext()) {
-                        Toast.makeText(Activity_inicio.this, msg3, Toast.LENGTH_SHORT).show();
-                        // Obtengo el username
-                        String username = c.getString(0);
-                        System.out.println("############### " + username);
-                        System.out.println("############### " + user);
-                        // Paso a la actividad jugar y cierro el dialogo
-                        dialog.dismiss();
-                        Intent intent = new Intent(Activity_inicio.this, Activity_centro.class);
-                        intent.putExtra("username", username);
-                        startActivityIntent.launch(intent);
-                        // Termino la actividad
-                        finish();
+                                    // Paso a la actividad jugar y cierro el dialogo
+                                    dialog.dismiss();
+                                    Intent intent = new Intent(Activity_inicio.this, Activity_centro.class);
 
-                    } else {
-                        Toast.makeText(Activity_inicio.this, msg2, Toast.LENGTH_SHORT).show();
-                    }
+                                    intent.putExtra("username", user);
+                                    startActivityIntent.launch(intent);
+                                    // Termino la actividad
+                                    finish();
+                                } else {
+                                    Toast.makeText(Activity_inicio.this, msg2, Toast.LENGTH_SHORT).show();
+                                }
 
+                            }
+
+                        }
+                    });
+                    WorkManager.getInstance(Activity_inicio.this).enqueue(login);
                 }
             }
-
-
         });
 
         // Funcion del texto de registrarse
@@ -216,7 +238,6 @@ public class Activity_inicio extends AppCompatActivity {
                 String msg_registro = getString(R.string.register_msg_registro);
                 String msg_usuario = getString(R.string.login_msg_usuario);
 
-
                 // Obtengo los datos introducidos
                 TextView txt_nombre = (TextView) dialog.findViewById(R.id.register_nombre);
                 String nombre = txt_nombre.getText().toString();
@@ -228,16 +249,6 @@ public class Activity_inicio extends AppCompatActivity {
                 String pwd = txt_pwd.getText().toString();
                 TextView txt_pwd2 = (TextView) dialog.findViewById(R.id.register_password2);
                 String pwd2 = txt_pwd2.getText().toString();
-                // Se carga la imagen por defecto
-                Bitmap bmap = BitmapFactory.decodeResource(getResources(), R.drawable.perfil);
-                byte[] img_perfil = Utility.getBitmapAsByteArray(bmap);
-
-                // Obtengo la BD
-                BD gestorBD = new BD(Activity_inicio.this, "miBD", null, 1);
-                SQLiteDatabase bd = gestorBD.getWritableDatabase();
-
-                // Miro en la BD si ya existe un username con ese nombre
-                Cursor c = bd.rawQuery("SELECT Username FROM Usuarios WHERE Username = " + "'" + username + "'", null);
 
                 if (nombre.equals("") || apellidos.equals("") || username.equals("") || pwd.equals("") || pwd2.equals("")) {
                     // Alguno de los campos no ha sido rellenado
@@ -245,37 +256,85 @@ public class Activity_inicio extends AppCompatActivity {
                 } else if (!pwd.equals(pwd2)) {
                     // Las dos contraseñas no coinciden
                     Toast.makeText(Activity_inicio.this, msg_contraseñas, Toast.LENGTH_SHORT).show();
-                } else if (c.moveToNext()) {
-                    // Existe un usuario con ese nombre registrado
-                    Toast.makeText(Activity_inicio.this, msg_usuario, Toast.LENGTH_SHORT).show();
                 } else {
-                    // Todos los campos son correctos, realizo el registro
+                    // Compruebo que el usuario introducido no existe ya
+                    Data datosSelect = new Data.Builder()
+                            .putString("peticion", "selectUsuario")
+                            .putString("usuario", username)
+                            .build();
 
-                    // Introduzco los datos
-                    ContentValues datos = new ContentValues();
-                    datos.put("Username", username);
-                    datos.put("Nombre", nombre);
-                    datos.put("Apellidos", apellidos);
-                    datos.put("Password", pwd);
-                    datos.put("Foto", img_perfil);
+                    // Crear la peticion a la BD
+                    OneTimeWorkRequest selectUser = new OneTimeWorkRequest.Builder(ConexionBD.class)
+                            .setInputData(datosSelect)
+                            .build();
 
-                    bd.insert("Usuarios", null, datos);
+                    // Observer que comprueba que la peticion se realice
+                    WorkManager.getInstance(Activity_inicio.this).getWorkInfoByIdLiveData(selectUser.getId()).observe(Activity_inicio.this, new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(WorkInfo workInfo) {
+                            // Aqui se gestiona la respuesta de la peticion
+                            if (workInfo != null && workInfo.getState().isFinished()) {
+                                Data output = workInfo.getOutputData();
+                                System.out.println(output.getString("resultado"));
+                                if (!output.getString("resultado").equals("El usuario no existe")) {
+                                    Toast.makeText(Activity_inicio.this, msg_usuario, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // Se ha comprobado que no existe el usuario, se realiza el registro
 
-                    Toast.makeText(Activity_inicio.this, msg_registro, Toast.LENGTH_SHORT).show();
 
-                    // Elimino el dialogo
-                    dialog.dismiss();
+                                    // Se carga la imagen por defecto
+                                    Bitmap bmap = BitmapFactory.decodeResource(getResources(), R.drawable.perfil);
+                                    // Comprimo la imagen para que no de problemas en la BD
+                                    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+                                    bmap.compress(Bitmap.CompressFormat.PNG, 100, byteStream);
+                                    byte[] img_bytes = Utility.getBitmapAsByteArray(bmap);
+                                    img_perfil = Base64.getEncoder().encodeToString(img_bytes);
 
-                    // Avanzo a la siguiente actividad
-                    Intent intent = new Intent(Activity_inicio.this, Activity_centro.class);
-                    intent.putExtra("username", username);
-                    startActivityIntent.launch(intent);
 
-                    // Termino la actividad
-                    finish();
+                                    // Datos a enviar a la BD
+                                    Data datos = new Data.Builder()
+                                            .putString("peticion", "registro")
+                                            .putString("nombre", nombre)
+                                            .putString("apellidos", apellidos)
+                                            .putString("usuario", username)
+                                            .putString("contraseña", pwd)
+                                            .build();
 
+                                    // Crear la peticion a la BD
+                                    OneTimeWorkRequest registro = new OneTimeWorkRequest.Builder(ConexionBD.class)
+                                            .setInputData(datos)
+                                            .build();
+                                    // Observer que comprueba que la peticion se realice
+                                    WorkManager.getInstance(Activity_inicio.this).getWorkInfoByIdLiveData(registro.getId()).observe(Activity_inicio.this, new Observer<WorkInfo>() {
+                                        @Override
+                                        public void onChanged(WorkInfo workInfo) {
+                                            // Aqui se gestiona la respuesta de la peticion
+                                            if (workInfo != null && workInfo.getState().isFinished()) {
+                                                Data output = workInfo.getOutputData();
+                                                if (output.getBoolean("resultado", false)) {
+                                                    Toast.makeText(Activity_inicio.this, msg_registro, Toast.LENGTH_SHORT).show();
+
+                                                    // Elimino el dialogo
+                                                    dialog.dismiss();
+
+                                                    // Avanzo a la siguiente actividad
+                                                    Intent intent = new Intent(Activity_inicio.this, Activity_centro.class);
+                                                    intent.putExtra("username", username);
+                                                    startActivityIntent.launch(intent);
+
+                                                    // Termino la actividad
+                                                    finish();
+                                                }
+                                            }
+                                        }
+                                    });
+                                    WorkManager.getInstance(Activity_inicio.this).enqueue(registro);
+                                }
+                            }
+                        }
+                    });
+                    WorkManager.getInstance(Activity_inicio.this).enqueue(selectUser);
                 }
-
             }
         });
 

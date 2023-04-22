@@ -38,6 +38,8 @@ public class Activity_perfil extends AppCompatActivity {
 
     private static String username = "";
     private static byte[] img_bytes;
+    static String foto;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
