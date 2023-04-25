@@ -101,21 +101,6 @@ public class Activity_inicio extends AppCompatActivity {
 
         setContentView(R.layout.activity_inicio);
 
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
-            @Override
-            public void onComplete(@NonNull Task<String> task) {
-                if (!task.isSuccessful()) {
-                    System.out.println("AQUI HA PASAO ALGO QUE NO DEBERIA");
-                    return;
-                }
-
-                // Get new FCM registration token
-                String token = task.getResult();
-
-                System.out.println("#### TOKEN: " + token + "####");
-            }
-        });
-
     }
 
     // Metodos onClick
@@ -190,9 +175,7 @@ public class Activity_inicio extends AppCompatActivity {
                                 } else {
                                     Toast.makeText(Activity_inicio.this, msg2, Toast.LENGTH_SHORT).show();
                                 }
-
                             }
-
                         }
                     });
                     WorkManager.getInstance(Activity_inicio.this).enqueue(login);
@@ -281,7 +264,6 @@ public class Activity_inicio extends AppCompatActivity {
                                 } else {
                                     // Se ha comprobado que no existe el usuario, se realiza el registro
 
-
                                     // Se carga la imagen por defecto
                                     Bitmap bmap = BitmapFactory.decodeResource(getResources(), R.drawable.perfil);
                                     // Comprimo la imagen para que no de problemas en la BD
@@ -289,7 +271,6 @@ public class Activity_inicio extends AppCompatActivity {
                                     bmap.compress(Bitmap.CompressFormat.PNG, 100, byteStream);
                                     byte[] img_bytes = Utility.getBitmapAsByteArray(bmap);
                                     img_perfil = Base64.getEncoder().encodeToString(img_bytes);
-
 
                                     // Datos a enviar a la BD
                                     Data datos = new Data.Builder()
@@ -313,6 +294,18 @@ public class Activity_inicio extends AppCompatActivity {
                                                 Data output = workInfo.getOutputData();
                                                 if (output.getBoolean("resultado", false)) {
                                                     Toast.makeText(Activity_inicio.this, msg_registro, Toast.LENGTH_SHORT).show();
+
+                                                    // Registro al nuevo usuario a un topico FCM en el que estan todos los usuarios
+                                                    FirebaseMessaging.getInstance().subscribeToTopic("all").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                System.out.println("***** Suscripcion exitosa");
+                                                            } else {
+                                                                System.out.println("***** Suscripcion fallida");
+                                                            }
+                                                        }
+                                                    });
 
                                                     // Elimino el dialogo
                                                     dialog.dismiss();

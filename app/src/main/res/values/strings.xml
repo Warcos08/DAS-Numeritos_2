@@ -82,4 +82,5 @@
     <string name="centro_btn_mapa">Mapa</string>
     <string name="notif_diaria">¿Has probado a batir un record hoy?</string>
     <string name="title_activity_mapa">Activity_mapa</string>
+    <string name="notif_perfil">Cambios guardados con éxito</string>
 </resources>

@@ -8,7 +8,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
 import androidx.preference.PreferenceManager;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -23,6 +28,7 @@ import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,9 +43,8 @@ import java.util.Locale;
 public class Activity_perfil extends AppCompatActivity {
 
     private static String username = "";
-    private static byte[] img_bytes;
+    //private static byte[] img_bytes;
     static String foto;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,26 +103,46 @@ public class Activity_perfil extends AppCompatActivity {
         input_username.setText(username);
 
         // Cargo la foto del usuario almacenada en la BD
-        BD gestorBD = new BD(Activity_perfil.this, "miBD", null, 1);
-        SQLiteDatabase bd = gestorBD.getWritableDatabase();
 
-        if (img_bytes == null) {
-            System.out.println("##### BYTES estan a NULL #####");
-            Cursor c = bd.rawQuery("SELECT Foto FROM Usuarios WHERE Username = " + "'" + username + "'", null);
-            c.moveToFirst();
-            img_bytes = c.getBlob(0);
-        }
+        // Por defecto cargo la por defecto
+        ImageView img = (ImageView) findViewById(R.id.img_perfil);
+        img.setImageResource(R.drawable.perfil);
 
-        System.out.println(img_bytes);
+        Data datosSelect = new Data.Builder()
+                .putString("peticion", "selectUsuario")
+                .putString("usuario", username)
+                .build();
 
-        ImageView marco = (ImageView) findViewById(R.id.img_perfil);
-        Bitmap img_perfil = Utility.getImage(img_bytes);
-        if (img_perfil != null) {
-            System.out.println(img_perfil);
-        } else {
-            System.out.println("##### LA IMAGEN ES NULL POR ALGUNA RAZON #####");
-        }
-        marco.setImageBitmap(img_perfil);
+        // Crear la peticion a la BD
+        OneTimeWorkRequest selectUser = new OneTimeWorkRequest.Builder(ConexionBD.class)
+                .setInputData(datosSelect)
+                .build();
+
+        // Observer que comprueba que la peticion se realice
+        WorkManager.getInstance(Activity_perfil.this).getWorkInfoByIdLiveData(selectUser.getId()).observe(Activity_perfil.this, new Observer<WorkInfo>() {
+            @Override
+            public void onChanged(WorkInfo workInfo) {
+                if (workInfo != null && workInfo.getState().isFinished()) {
+                    // En este caso no nos importa el output de la peticion, solo que se realice y que se cargue la imagen
+                    Data output = workInfo.getOutputData();
+                    if (!output.getString("resultado").equals("El usuario no existe") && foto != null) {
+
+                        /** Paso el string de la imagen a un bitmap **/
+                        byte [] encodeByte = Base64.decode(foto, Base64.DEFAULT);
+                        Bitmap bmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+
+                        ImageView img = (ImageView) findViewById(R.id.img_perfil);
+                        img.setImageBitmap(bmap);
+
+                    } else {
+                        // En caso de que se de un fallo cargo la imagen por defecto
+                        ImageView img = (ImageView) findViewById(R.id.img_perfil);
+                        img.setImageResource(R.drawable.perfil);
+                    }
+                }
+            }
+        });
+        WorkManager.getInstance(Activity_perfil.this).enqueue(selectUser);
 
         // Boton de tomar foto
         Button btn_foto = (Button) findViewById(R.id.btn_foto);
@@ -149,18 +174,6 @@ public class Activity_perfil extends AppCompatActivity {
                     Intent elIntentFoto= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     takePictureLauncher.launch(elIntentFoto);
                 }
-
-
-                /**
-                if (ContextCompat.checkSelfPermission(Activity_perfil.this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(Activity_perfil.this, new String[]{android.Manifest.permission.CAMERA}, 20);
-                }
-
-                if (ContextCompat.checkSelfPermission(Activity_perfil.this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(Activity_perfil.this, new String[]{android.Manifest.permission.CAMERA}, 20);
-                }
-                **/
-
             }
         });
 
@@ -189,7 +202,6 @@ public class Activity_perfil extends AppCompatActivity {
                             .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
                             .build());
                 }
-
             }
         });
 
@@ -205,40 +217,97 @@ public class Activity_perfil extends AppCompatActivity {
                 EditText input_username = (EditText) findViewById(R.id.input_username);
                 String nuevo_user = String.valueOf(input_username.getText());
 
-                /** Guardo los cambios en la BD **/
-                // Obtengo la BD
-                BD gestorBD = new BD(Activity_perfil.this, "miBD", null, 1);
-                SQLiteDatabase bd = gestorBD.getWritableDatabase();
-
                 // Miro si se ha cambiado el nombre de usuario
                 if (!username.equals(nuevo_user)) {
-                    Cursor c = bd.rawQuery("SELECT Username FROM Usuarios WHERE Username = " + "'" + nuevo_user + "'", null);
-                    if (c.moveToNext()) {
-                        // Si ya existe un usuario con ese nombre
-                        Toast.makeText(Activity_perfil.this, msg_usuario, Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                    // Compruebo si el nombre nuevo ya existe en la BD
+                    Data datos = new Data.Builder()
+                            .putString("peticion", "selectUsuario")
+                            .putString("usuario", nuevo_user)
+                            .build();
 
-                    // Si el nombre es valido, lo actualizo junto a la foto
-                    ContentValues cv = new ContentValues();
-                    cv.put("Username", nuevo_user);
-                    cv.put("Foto", img_bytes);
-                    bd.update("Usuarios", cv, "Username='" + username + "'", null);
+                    // Crear la peticion a la BD
+                    OneTimeWorkRequest selectUser = new OneTimeWorkRequest.Builder(ConexionBD.class)
+                            .setInputData(datos)
+                            .build();
+
+                    // Observer que comprueba que la peticion se realice
+                    WorkManager.getInstance(Activity_perfil.this).getWorkInfoByIdLiveData(selectUser.getId()).observe(Activity_perfil.this, new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(WorkInfo workInfo) {
+                            if (workInfo != null && workInfo.getState().isFinished()) {
+                                Data output = workInfo.getOutputData();
+                                if (!output.getString("resultado").equals("El usuario no existe")) {
+                                    // El nombre de usuario elegido existe
+                                    Toast.makeText(Activity_perfil.this, msg_usuario, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // El nombre de usuario elegido esta disponible, actualizo su valor
+                                    Data datos = new Data.Builder()
+                                            .putString("peticion", "updateUsers")
+                                            .putString("userViejo", username)
+                                            .putString("userNuevo", nuevo_user)
+                                            .build();
+
+                                    // Crear la peticion a la BD
+                                    OneTimeWorkRequest updateUsers = new OneTimeWorkRequest.Builder(ConexionBD.class)
+                                            .setInputData(datos)
+                                            .build();
+
+                                    // Observer que comprueba que la peticion se realice
+                                    WorkManager.getInstance(Activity_perfil.this).getWorkInfoByIdLiveData(updateUsers.getId()).observe(Activity_perfil.this, new Observer<WorkInfo>() {
+                                        @Override
+                                        public void onChanged(WorkInfo workInfo) {
+                                            if (workInfo != null && workInfo.getState().isFinished()) {
+                                                Data output = workInfo.getOutputData();
+                                                if (output.getBoolean("resultado", true)) {
+                                                    // En caso de que se realice la insercion, cambio de actividad
+                                                    Intent intent = new Intent();
+                                                    intent.putExtra("username", nuevo_user);
+                                                    setResult(33, intent);
+                                                    finish();
+                                                }
+                                            }
+                                        }
+                                    });
+                                    WorkManager.getInstance(Activity_perfil.this).enqueue(updateUsers);
+                                }
+                            }
+                        }
+                    });
+                    WorkManager.getInstance(Activity_perfil.this).enqueue(selectUser);
 
                 } else {
-                    // Si solo se ha cambiado la foto, la actualizo
-                    ContentValues cv = new ContentValues();
-                    cv.put("Foto", img_bytes);
-                    bd.update("Usuarios", cv, "Username='" + username + "'", null);
-                }
+                    // Si solo se ha cambiado la foto, la actualizo directamente
+                    Data datos = new Data.Builder()
+                            .putString("peticion", "updateUsers")
+                            .putString("userViejo", username)
+                            .putString("userNuevo", nuevo_user)
+                            .build();
 
-                Intent intent = new Intent();
-                intent.putExtra("username", nuevo_user);
-                setResult(33, intent);
-                finish();
+                    // Crear la peticion a la BD
+                    OneTimeWorkRequest updateUsers = new OneTimeWorkRequest.Builder(ConexionBD.class)
+                            .setInputData(datos)
+                            .build();
+
+                    // Observer que comprueba que la peticion se realice
+                    WorkManager.getInstance(Activity_perfil.this).getWorkInfoByIdLiveData(updateUsers.getId()).observe(Activity_perfil.this, new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(WorkInfo workInfo) {
+                            if (workInfo != null && workInfo.getState().isFinished()) {
+                                Data output = workInfo.getOutputData();
+                                if (output.getBoolean("resultado", true)) {
+                                    // En caso de que se realice la insercion, cambio de actividad
+                                    Intent intent = new Intent();
+                                    intent.putExtra("username", nuevo_user);
+                                    setResult(33, intent);
+                                    finish();
+                                }
+                            }
+                        }
+                    });
+                    WorkManager.getInstance(Activity_perfil.this).enqueue(updateUsers);
+                }
             }
         });
-
     }
 
     // Recoger el intent de la foto tomada por la camara
@@ -247,9 +316,13 @@ public class Activity_perfil extends AppCompatActivity {
                 Bundle bundle = result.getData().getExtras();
                 ImageView img_perfil = findViewById(R.id.img_perfil);
                 Bitmap miniatura = (Bitmap) bundle.get("data");
-                img_bytes = Utility.getBitmapAsByteArray(miniatura);
-                System.out.println(img_bytes);
                 img_perfil.setImageBitmap(miniatura);
+
+                ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+                miniatura.compress(Bitmap.CompressFormat.PNG, 100, byteStream);
+                byte[] img_bytes = Utility.getBitmapAsByteArray(miniatura);
+                foto = java.util.Base64.getEncoder().encodeToString(img_bytes);
+
             } else {
                 Log.d("TakenPicture", "No photo taken");
             }
@@ -262,13 +335,17 @@ public class Activity_perfil extends AppCompatActivity {
                 Bitmap bmap = null;
                 try {
                     bmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+
+                    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+                    bmap.compress(Bitmap.CompressFormat.PNG, 100, byteStream);
+                    byte[] img_bytes = Utility.getBitmapAsByteArray(bmap);
+                    foto = java.util.Base64.getEncoder().encodeToString(img_bytes);
+
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                img_bytes = Utility.getBitmapAsByteArray(bmap);
-                System.out.println(img_bytes);
-                ImageView marco = findViewById(R.id.img_perfil);
-                marco.setImageURI(uri);
+                ImageView img_perfil = findViewById(R.id.img_perfil);
+                img_perfil.setImageURI(uri);
             } else {
                 Log.d("PhotoPicker", "No media selected");
             }

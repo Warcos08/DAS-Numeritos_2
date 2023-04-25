@@ -5,7 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Observer;
 import androidx.preference.PreferenceManager;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import android.Manifest;
 import android.app.NotificationChannel;
@@ -33,6 +38,11 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.util.Locale;
 
@@ -126,13 +136,6 @@ public class Activity_jugar extends AppCompatActivity {
                 } else if (!miJuego.comprobarRespuesta(Long.parseLong(respuesta))) {
                     // Si la respuesta es incorrecta
 
-                    // Guardar la puntuacion en la BD
-                    BD gestorBD = new BD(Activity_jugar.this, "miBD", null, 1);
-                    SQLiteDatabase bd = gestorBD.getReadableDatabase();
-                    ContentValues datos = new ContentValues();
-                    datos.put("Username", username);
-                    datos.put("Puntuacion", miJuego.getPuntuacion());
-
                     // Obtengo las coordenadas en las que se ha jugado la partida
                     FusedLocationProviderClient provider = null;
                     if (ContextCompat.checkSelfPermission(Activity_jugar.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
@@ -147,33 +150,131 @@ public class Activity_jugar extends AppCompatActivity {
                                 } else {
                                     System.out.println("***** La location es null");
                                 }
-                                datos.put("Latitud", latitud);
-                                datos.put("Longitud", longitud);
 
-                                bd.insert("Puntuaciones", null, datos);
+                                // Guardar la puntuacion en la BD
+                                Data datosInsert = new Data.Builder()
+                                        .putString("peticion", "insertPuntuaciones")
+                                        .putString("username", username)
+                                        .putInt("puntuacion", miJuego.getPuntuacion())
+                                        .putDouble("latitud", latitud)
+                                        .putDouble("longitud", longitud)
+                                        .build();
+
+                                // Crear la peticion a la BD
+                                OneTimeWorkRequest insertPuntuacion = new OneTimeWorkRequest.Builder(ConexionBD.class)
+                                        .setInputData(datosInsert)
+                                        .build();
+
+                                // Observer que comprueba que la peticion se realice
+                                WorkManager.getInstance(Activity_jugar.this).getWorkInfoByIdLiveData(insertPuntuacion.getId()).observe(Activity_jugar.this, new Observer<WorkInfo>() {
+                                    @Override
+                                    public void onChanged(WorkInfo workInfo) {
+                                        // Aqui se gestiona la respuesta de la peticion
+                                        if (workInfo != null && workInfo.getState().isFinished()) {
+                                            Data output = workInfo.getOutputData();
+                                            if (output.getBoolean("resultado", false)) {
+                                                System.out.println("***** INSERT REALIZADO CON EXITO");
+                                                // Dialogo de "Has perdido"
+                                                Bundle args = new Bundle();
+                                                args.putInt("ptos", miJuego.getPuntuacion());
+                                                miJuego = null;     // Termino la partida
+                                                DialogFragment dialogo_derrota = new Dialogo_derrota();
+                                                dialogo_derrota.setCancelable(false);
+                                                dialogo_derrota.setArguments(args);
+                                                dialogo_derrota.show(getSupportFragmentManager(), "dialogo_derrota");
+                                            } else {
+                                                System.out.println("***** INSERT NO REALIZADO");
+                                            }
+                                        }
+                                    }
+                                });
+                                WorkManager.getInstance(Activity_jugar.this).enqueue(insertPuntuacion);
 
                             }
-                        }).addOnFailureListener(Activity_jugar.this, new OnFailureListener() {
+                        })
+                        .addOnFailureListener(Activity_jugar.this, new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                datos.put("Latitud", -999);
-                                datos.put("Longitud", -999);
-                                bd.insert("Puntuaciones", null, datos);
+                                // Guardar la puntuacion en la BD
+                                Data datosInsert = new Data.Builder()
+                                        .putString("peticion", "insertPuntuaciones")
+                                        .putString("username", username)
+                                        .putInt("puntuacion", miJuego.getPuntuacion())
+                                        .putDouble("latitud", latitud)
+                                        .putDouble("longitud", longitud)
+                                        .build();
+
+                                // Crear la peticion a la BD
+                                OneTimeWorkRequest insertPuntuacion = new OneTimeWorkRequest.Builder(ConexionBD.class)
+                                        .setInputData(datosInsert)
+                                        .build();
+
+                                // Observer que comprueba que la peticion se realice
+                                WorkManager.getInstance(Activity_jugar.this).getWorkInfoByIdLiveData(insertPuntuacion.getId()).observe(Activity_jugar.this, new Observer<WorkInfo>() {
+                                    @Override
+                                    public void onChanged(WorkInfo workInfo) {
+                                        // Aqui se gestiona la respuesta de la peticion
+                                        if (workInfo != null && workInfo.getState().isFinished()) {
+                                            Data output = workInfo.getOutputData();
+                                            if (output.getBoolean("resultado", false)) {
+                                                System.out.println("***** INSERT REALIZADO CON EXITO");
+                                                // Dialogo de "Has perdido"
+                                                Bundle args = new Bundle();
+                                                args.putInt("ptos", miJuego.getPuntuacion());
+                                                miJuego = null;     // Termino la partida
+                                                DialogFragment dialogo_derrota = new Dialogo_derrota();
+                                                dialogo_derrota.setCancelable(false);
+                                                dialogo_derrota.setArguments(args);
+                                                dialogo_derrota.show(getSupportFragmentManager(), "dialogo_derrota");
+                                            } else {
+                                                System.out.println("***** INSERT NO REALIZADO");
+                                            }
+                                        }
+                                    }
+                                });
+                                WorkManager.getInstance(Activity_jugar.this).enqueue(insertPuntuacion);
                             }
                         });
 
                     } else {
-                        datos.put("Latitud", -999);
-                        datos.put("Longitud", -999);
+                        // Guardar la puntuacion en la BD
+                        Data datosInsert = new Data.Builder()
+                                .putString("peticion", "insertPuntuaciones")
+                                .putString("username", username)
+                                .putInt("puntuacion", miJuego.getPuntuacion())
+                                .putDouble("latitud", latitud)
+                                .putDouble("longitud", longitud)
+                                .build();
 
-                        bd.insert("Puntuaciones", null, datos);
-                    }
+                        // Crear la peticion a la BD
+                        OneTimeWorkRequest insertPuntuacion = new OneTimeWorkRequest.Builder(ConexionBD.class)
+                                .setInputData(datosInsert)
+                                .build();
 
-                    if (provider == null) {
-                        System.out.println("***** El provider es null");
-                    } else {
-                        System.out.println("***** El provider NO es null");
-
+                        // Observer que comprueba que la peticion se realice
+                        WorkManager.getInstance(Activity_jugar.this).getWorkInfoByIdLiveData(insertPuntuacion.getId()).observe(Activity_jugar.this, new Observer<WorkInfo>() {
+                            @Override
+                            public void onChanged(WorkInfo workInfo) {
+                                // Aqui se gestiona la respuesta de la peticion
+                                if (workInfo != null && workInfo.getState().isFinished()) {
+                                    Data output = workInfo.getOutputData();
+                                    if (output.getBoolean("resultado", false)) {
+                                        System.out.println("***** INSERT REALIZADO CON EXITO");
+                                        // Dialogo de "Has perdido"
+                                        Bundle args = new Bundle();
+                                        args.putInt("ptos", miJuego.getPuntuacion());
+                                        miJuego = null;     // Termino la partida
+                                        DialogFragment dialogo_derrota = new Dialogo_derrota();
+                                        dialogo_derrota.setCancelable(false);
+                                        dialogo_derrota.setArguments(args);
+                                        dialogo_derrota.show(getSupportFragmentManager(), "dialogo_derrota");
+                                    } else {
+                                        System.out.println("***** INSERT NO REALIZADO");
+                                    }
+                                }
+                            }
+                        });
+                        WorkManager.getInstance(Activity_jugar.this).enqueue(insertPuntuacion);
                     }
 
                     // Compruebo que se tenga permiso para mandar notificaciones y se haya activado en ajustes
@@ -185,56 +286,84 @@ public class Activity_jugar extends AppCompatActivity {
                         // Notificaciones si ha alcanzado el ranking
 
                         // Consulta para saber si se ha entrado en el ranking
-                        Cursor c = bd.rawQuery("SELECT Puntuacion FROM Puntuaciones " +
-                                "WHERE Puntuacion > " + "'" + miJuego.getPuntuacion() + "'", null);
+                        Data datosSelect = new Data.Builder()
+                                .putString("peticion", "selectPuntuaciones")
+                                .putInt("opcion", 2)
+                                .putInt("puntuacion", miJuego.getPuntuacion())
+                                .build();
 
-                        NotificationManager notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                        NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(Activity_jugar.this, "notifCanal");
-                        // Creo el canal si la version de android lo requiere
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            NotificationChannel elCanal = new NotificationChannel("notifCanal", "notifRanking", NotificationManager.IMPORTANCE_DEFAULT);
-                            notifManager.createNotificationChannel(elCanal);
-                        }
+                        // Crear la peticion a la BD
+                        OneTimeWorkRequest selectRanking = new OneTimeWorkRequest.Builder(ConexionBD.class)
+                                .setInputData(datosSelect)
+                                .build();
 
-                        elBuilder.setSmallIcon(R.drawable.logo)
-                                .setContentTitle("NUMERITOS")
-                                .setVibrate(new long[]{0, 1000, 500, 1000})
-                                .setAutoCancel(true);
+                        // Observer que comprueba que la peticion se realice
+                        WorkManager.getInstance(Activity_jugar.this).getWorkInfoByIdLiveData(selectRanking.getId()).observe(Activity_jugar.this, new Observer<WorkInfo>() {
+                            @Override
+                            public void onChanged(WorkInfo workInfo) {
+                                if (workInfo != null && workInfo.getState().isFinished()) {
+                                    Data output = workInfo.getOutputData();
+                                    String resultado = output.getString("resultado");
+                                    Integer pos = 0;    // Posicion del ranking en la que se coloca el jugador
 
-                        switch (c.getCount()) {
-                            case 0:
-                                // Notificacion de que estas primero
-                                elBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.gold_trans))
-                                        .setContentText(getString(R.string.jugar_msg_rank1));
-                                notifManager.notify(12, elBuilder.build());
-                                break;
-                            case 1:
-                                // Notificacion de que estas segundo
-                                elBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.silver_trans))
-                                        .setContentText(getString(R.string.jugar_msg_rank2));
-                                notifManager.notify(12, elBuilder.build());
-                                break;
-                            case 2:
-                                // Notificacion de que estas tercero
-                                elBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.bronze_trans))
-                                        .setContentText(getString(R.string.jugar_msg_rank3));
-                                notifManager.notify(12, elBuilder.build());
-                                break;
-                            default:
-                                break;
-                        }
+                                    System.out.println(resultado);
+                                    if (resultado.equals("Top 1")) {
+                                        // Si la BD no devuelve nada es que se coloca en el Top 1 del ranking
+                                        pos = 1;
+                                    } else {
+                                        JSONParser parser = new JSONParser();
+                                        try {
+                                            JSONArray jsonResultado = (JSONArray) parser.parse(output.getString("resultado"));
+                                            System.out.println("***** " + jsonResultado.size());
+                                            pos = jsonResultado.size() + 1;
 
+                                        } catch (ParseException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                    }
+
+                                    if (pos <= 3 && pos != 0) {
+                                        NotificationManager notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                                        NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(Activity_jugar.this, "notifCanal");
+                                        // Creo el canal si la version de android lo requiere
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                            NotificationChannel elCanal = new NotificationChannel("notifCanal", "notifRanking", NotificationManager.IMPORTANCE_DEFAULT);
+                                            notifManager.createNotificationChannel(elCanal);
+                                        }
+
+                                        elBuilder.setSmallIcon(R.drawable.logo)
+                                                .setContentTitle("NUMERITOS")
+                                                .setVibrate(new long[]{0, 1000, 500, 1000})
+                                                .setAutoCancel(true);
+
+                                        switch (pos) {
+                                            case 1:
+                                                // Notificacion de que estas primero
+                                                elBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.gold_trans))
+                                                        .setContentText(getString(R.string.jugar_msg_rank1));
+                                                notifManager.notify(12, elBuilder.build());
+                                                break;
+                                            case 2:
+                                                // Notificacion de que estas segundo
+                                                elBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.silver_trans))
+                                                        .setContentText(getString(R.string.jugar_msg_rank2));
+                                                notifManager.notify(12, elBuilder.build());
+                                                break;
+                                            case 3:
+                                                // Notificacion de que estas tercero
+                                                elBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.bronze_trans))
+                                                        .setContentText(getString(R.string.jugar_msg_rank3));
+                                                notifManager.notify(12, elBuilder.build());
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                        WorkManager.getInstance(Activity_jugar.this).enqueue(selectRanking);
                     }
-
-                    // Dialogo de "Has perdido"
-                    Bundle args = new Bundle();
-                    args.putInt("ptos", miJuego.getPuntuacion());
-                    miJuego = null;     // Termino la partida
-                    DialogFragment dialogo_derrota = new Dialogo_derrota();
-                    dialogo_derrota.setCancelable(false);
-                    dialogo_derrota.setArguments(args);
-                    dialogo_derrota.show(getSupportFragmentManager(), "dialogo_derrota");
-
                 } else {
                     // Si la respuesta es correcta
 
@@ -251,7 +380,6 @@ public class Activity_jugar extends AppCompatActivity {
                     TextView txt_cifra = (TextView) findViewById(R.id.jugar_numeros);
                     txt_cifra.setText(Integer.toString(miJuego.getCifra()));
                 }
-
             }
         });
 
@@ -276,7 +404,6 @@ public class Activity_jugar extends AppCompatActivity {
         setResult(3, intent);
         finish();
     }
-
 
     @Override
     protected void onStart() {

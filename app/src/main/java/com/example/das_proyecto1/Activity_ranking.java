@@ -1,7 +1,12 @@
 package com.example.das_proyecto1;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.preference.PreferenceManager;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +18,12 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.widget.ListView;
+
+import org.json.JSONException;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.util.Locale;
 
@@ -75,35 +86,62 @@ public class Activity_ranking extends AppCompatActivity {
         getSupportActionBar().setTitle(getString(R.string.ranking_titulo));
 
         // Obtener lo que necesitamos mostrar de la BD
-        BD gestorBD = new BD(Activity_ranking.this, "miBD", null, 1);
-        SQLiteDatabase bd = gestorBD.getReadableDatabase();
-        Cursor cursor = bd.rawQuery("SELECT * " +
-                                        "FROM Puntuaciones " +
-                                        "ORDER BY Puntuacion DESC " +
-                                        "LIMIT 10", null);
 
-        // Meto la info en las variables
-        int i = 0;
-        while(cursor.moveToNext()) {
-            users[i] = cursor.getString(1);
-            System.out.println(users[i]);
-            ptos[i] = cursor.getInt(2);
-            System.out.println(ptos[i]);
-            i++;
-        }
+        Data datosSelect = new Data.Builder()
+                .putString("peticion", "selectPuntuaciones")
+                .putInt("opcion", 1)
+                .build();
 
-        // En caso de que haya menos info de la que se quiere mostrar, se rellena
-        while (i < 5) {
-            users[i] = "-";
-            ptos[i] = 0;
-            i++;
-        }
+        // Crear la peticion a la BD
+        OneTimeWorkRequest selectRanking = new OneTimeWorkRequest.Builder(ConexionBD.class)
+                .setInputData(datosSelect)
+                .build();
 
-        listView = (ListView) findViewById(R.id.ranking_list);
-        listView.setEnabled(false);
-        // Le paso al adapter lo que necesita
-        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), imgs_rank, users, ptos);
-        listView.setAdapter(customAdapter);
+        // Observer que comprueba que la peticion se realice
+        WorkManager.getInstance(Activity_ranking.this).getWorkInfoByIdLiveData(selectRanking.getId()).observe(Activity_ranking.this, new Observer<WorkInfo>() {
+            @Override
+            public void onChanged(WorkInfo workInfo) {
+                if (workInfo != null && workInfo.getState().isFinished()) {
+                    Data output = workInfo.getOutputData();
+                    if (!output.getString("resultado").equals("Top 1")) {
+                        JSONParser parser = new JSONParser();
+                        try {
+                            // Obtengo la información de las partidas
+                            JSONArray jsonResultado = (JSONArray) parser.parse(output.getString("resultado"));
+
+                            Integer i = 0;
+                            while (i < jsonResultado.size()) {
+                                JSONObject row = (JSONObject) jsonResultado.get(i);
+                                // Por defecto todos los datos son Strings, hay que convertirlos al tipo adecuado
+                                users[i] = (String) row.get("Username");
+                                String puntuacionS = (String) row.get("Puntuacion");
+                                ptos[i] = Integer.parseInt(puntuacionS);
+                                i++;
+                            }
+
+                            // En caso de que haya menos info de la que se quiere mostrar, se rellena
+                            while (i < 10) {
+                                users[i] = "-";
+                                ptos[i] = 0;
+                                i++;
+                            }
+
+                            listView = (ListView) findViewById(R.id.ranking_list);
+                            listView.setEnabled(false);
+                            // Le paso al adapter lo que necesita
+                            CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), imgs_rank, users, ptos);
+                            listView.setAdapter(customAdapter);
+
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                }
+            }
+        });
+        WorkManager.getInstance(Activity_ranking.this).enqueue(selectRanking);
+
     }
 
     @Override

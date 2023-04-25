@@ -1,11 +1,17 @@
 package com.example.das_proyecto1;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.widget.ListView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -14,6 +20,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.das_proyecto1.databinding.ActivityMapaBinding;
+
+import org.json.JSONException;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class Activity_mapa extends FragmentActivity implements OnMapReadyCallback {
 
@@ -55,30 +67,66 @@ public class Activity_mapa extends FragmentActivity implements OnMapReadyCallbac
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         // Consulta a la BD para obtener las partidas del jugador
-        BD gestorBD = new BD(Activity_mapa.this, "miBD", null, 1);
-        SQLiteDatabase bd = gestorBD.getReadableDatabase();
-        Cursor c = bd.rawQuery("SELECT * FROM Puntuaciones WHERE Username = '" + username + "'", null);
-        if (c.moveToFirst()) {
-            while (c.moveToNext()) {
-                // Obtengo los datos del puntero
-                double latitud = c.getDouble(3);
-                double longitud = c.getDouble(4);
-                int puntucion = c.getInt(2);
+        Data datosSelect = new Data.Builder()
+                .putString("peticion", "selectPuntuaciones")
+                .putInt("opcion", 3)
+                .putString("usuario", username)
+                .build();
 
-                System.out.println("##### " + Double.toString(latitud) + ", " + Double.toString(longitud));
+        // Crear la peticion a la BD
+        OneTimeWorkRequest selectRanking = new OneTimeWorkRequest.Builder(ConexionBD.class)
+                .setInputData(datosSelect)
+                .build();
 
-                // Creo el marcador y lo añado al mapa
-                LatLng partida = new LatLng(latitud, longitud);
-                mMap.addMarker(new MarkerOptions().position(partida).title("Puntuacion: " + Integer.toString(puntucion)));
+        // Observer que comprueba que la peticion se realice
+        WorkManager.getInstance(Activity_mapa.this).getWorkInfoByIdLiveData(selectRanking.getId()).observe(Activity_mapa.this, new Observer<WorkInfo>() {
+            @Override
+            public void onChanged(WorkInfo workInfo) {
+                if (workInfo != null && workInfo.getState().isFinished()) {
+                    Data output = workInfo.getOutputData();
+                    String resultado = output.getString("resultado");
+
+                    System.out.println("************ " + username);
+                    System.out.println(resultado);
+                    if (!resultado.equals("Usuario incorrecto")) {
+                        JSONParser parser = new JSONParser();
+                        try {
+                            // Obtengo la información de las partidas
+                            JSONArray jsonResultado = (JSONArray) parser.parse(output.getString("resultado"));
+
+                            for (int i = 0; i < jsonResultado.size(); i++) {
+                                JSONObject row = (JSONObject) jsonResultado.get(i);
+                                // Por defecto todos los datos son Strings, hay que convertirlos al tipo adecuado
+                                String latitudS = (String) row.get("Latitud");
+                                String longitudS = (String) row.get("Longitud");
+                                String puntuacionS = (String) row.get("Puntuacion");
+
+                                Double latitud = Double.parseDouble(latitudS);
+                                Double longitud = Double.parseDouble(longitudS);
+                                int puntuacion = (Integer) Integer.parseInt(puntuacionS);
+
+                                // Creo el marcador y lo añado al mapa
+                                LatLng partida = new LatLng(latitud, longitud);
+                                mMap.addMarker(new MarkerOptions().position(partida).title("Puntuacion: " + Integer.toString(puntuacion)));
+                            }
+
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                }
             }
-        }
+        });
+        WorkManager.getInstance(Activity_mapa.this).enqueue(selectRanking);
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent();
-        setResult(3, intent);
+        // Vuelvo a la actividad centro al pulsar el boton "back"
+        // Si no defino el metodo manualmente se peta
+        Intent intent = new Intent(this, Activity_centro.class);
+        startActivity(intent);
         finish();
     }
 }

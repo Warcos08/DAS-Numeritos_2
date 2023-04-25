@@ -207,7 +207,7 @@ public class Activity_centro extends AppCompatActivity {
             System.out.println("######### " + Integer.toString(result.getResultCode()) + " #########");
             if (result.getResultCode() == 33) {
                 username = result.getData().getStringExtra("username");
-                Toast.makeText(Activity_centro.this, username, Toast.LENGTH_SHORT).show();
+                Toast.makeText(Activity_centro.this, R.string.notif_perfil, Toast.LENGTH_SHORT).show();
             }
             finish();
             startActivity(getIntent());

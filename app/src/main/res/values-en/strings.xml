@@ -64,5 +64,6 @@
     <string name="perfil_text_username">Username:</string>
     <string name="centro_btn_mapa">Map</string>
     <string name="notif_diaria">Have you tried beating a record today?</string>
+    <string name="notif_perfil">Changes saved successfully</string>
 
 </resources>
