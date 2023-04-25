@@ -64,8 +64,12 @@
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- PARA QUE SE ABRA EL INICIO AL PULSAR LA NOTIFICACION FCM -->
+            <intent-filter>
+                <action android:name="AVISO" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
@@ -79,15 +83,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <!-- PARA QUE SE ABRA EL INICIO AL PULSAR LA NOTI FCM
-        <activity android:name=".Activity_inicio">
-            <intent-filter>
-                <action android:name="AVISO" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        -->
 
     </application>
 

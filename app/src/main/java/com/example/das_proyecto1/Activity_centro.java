@@ -143,8 +143,9 @@ public class Activity_centro extends AppCompatActivity {
 
         // Funciones del menu desplegable
 
-        // drawer layout instance to toggle the menu icon to open
-        // drawer and back button to close drawer
+        /** Código que gestiona el funcionamiento del botón del Navigation Drawer
+         *  Fuente: https://www.geeksforgeeks.org/navigation-drawer-in-android/
+         */
         DrawerLayout menuDesplegable = findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, menuDesplegable, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 

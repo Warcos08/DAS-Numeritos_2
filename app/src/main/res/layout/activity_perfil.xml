@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".Activity_perfil">
 
+    <!--
+    ** Código utilizado para añadir un ImageView circular
+    * Fuente: https://www.youtube.com/watch?v=nRPoW0X16QU&t=1s&ab_channel=Smartherd
+    * Modificado para adaptarlo al uso de la aplicación
+    -->
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_perfil"
         android:layout_width="200dp"

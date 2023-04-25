@@ -266,7 +266,10 @@ public class Activity_inicio extends AppCompatActivity {
 
                                     // Se carga la imagen por defecto
                                     Bitmap bmap = BitmapFactory.decodeResource(getResources(), R.drawable.perfil);
-                                    // Comprimo la imagen para que no de problemas en la BD
+                                    /** Código para convertir un BitMap en un String
+                                     *  Pregunta de StackOverflow: https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
+                                     *  Autor de la respuesta: https://stackoverflow.com/users/1191766/sachin10
+                                     */
                                     ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
                                     bmap.compress(Bitmap.CompressFormat.PNG, 100, byteStream);
                                     byte[] img_bytes = Utility.getBitmapAsByteArray(bmap);

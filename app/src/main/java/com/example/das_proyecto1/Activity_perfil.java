@@ -127,7 +127,10 @@ public class Activity_perfil extends AppCompatActivity {
                     Data output = workInfo.getOutputData();
                     if (!output.getString("resultado").equals("El usuario no existe") && foto != null) {
 
-                        /** Paso el string de la imagen a un bitmap **/
+                        /** Código para convertir un String en un BitMap
+                         *  Pregunta de StackOverflow: https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
+                         *  Autor de la respuesta: https://stackoverflow.com/users/1191766/sachin10
+                         */
                         byte [] encodeByte = Base64.decode(foto, Base64.DEFAULT);
                         Bitmap bmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
 
@@ -318,6 +321,10 @@ public class Activity_perfil extends AppCompatActivity {
                 Bitmap miniatura = (Bitmap) bundle.get("data");
                 img_perfil.setImageBitmap(miniatura);
 
+                /** Código para convertir un BitMap en un String
+                 *  Pregunta de StackOverflow: https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
+                 *  Autor de la respuesta: https://stackoverflow.com/users/1191766/sachin10
+                 */
                 ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
                 miniatura.compress(Bitmap.CompressFormat.PNG, 100, byteStream);
                 byte[] img_bytes = Utility.getBitmapAsByteArray(miniatura);
@@ -334,8 +341,16 @@ public class Activity_perfil extends AppCompatActivity {
                 Log.d("PhotoPicker", "Selected URI: " + uri);
                 Bitmap bmap = null;
                 try {
+                    /** Código utilizado para obtener el BitMap de una imagen sacada de la galería mediante una URI
+                     *  Pregunta de StackOverflow: https://stackoverflow.com/questions/3879992/how-to-get-bitmap-from-an-uri
+                     *  Autor de la respuesta: https://stackoverflow.com/users/986/mark-ingram
+                     */
                     bmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
 
+                    /** Código para convertir un BitMap en un String
+                     *  Pregunta de StackOverflow: https://stackoverflow.com/questions/13562429/how-many-ways-to-convert-bitmap-to-string-and-vice-versa
+                     *  Autor de la respuesta: https://stackoverflow.com/users/1191766/sachin10
+                     */
                     ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
                     bmap.compress(Bitmap.CompressFormat.PNG, 100, byteStream);
                     byte[] img_bytes = Utility.getBitmapAsByteArray(bmap);
